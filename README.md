@@ -10,6 +10,12 @@
 
 **An enterprise-grade fleet logistics, dispatch, and financial tracking system designed to eliminate spreadsheet chaos and automate compliance in real-time.**
 
+<a href="https://drive.google.com/drive/folders/1Xi77KDxRjo7IMGa5yuB7m1uAiOmzGyRr?usp=sharing" target="_blank">
+  <img src="https://img.shields.io/badge/Google_Drive-Video_Demo_🎞️-red?style=for-the-badge&logo=googledrive&logoColor=white" alt="Video Demo" />
+</a>
+
+<br/><br/>
+
 [Explore Features](#-core-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [Security & RBAC](#-security--rbac)
 
 </div>
@@ -280,3 +286,26 @@ Run the test suite using:
 ```text
 INFO hackathon_test_db odoo.tests.result: 0 failed, 0 error(s) of 10 tests when loading database 'hackathon_test_db'
 ```
+
+---
+
+## 📸 App Screenshots
+
+Below are screenshots showcasing the TransitOps platform interface:
+
+<div align="center">
+  <h3>1. Dynamic Operations Dashboard</h3>
+  <img src="Images/WhatsApp%20Image%202026-07-12%20at%204.52.10%20PM.jpeg" width="800" alt="Dynamic Operations Dashboard" />
+  
+  <h3>2. Trip Calendar Planner</h3>
+  <img src="Images/WhatsApp%20Image%202026-07-12%20at%204.52.28%20PM.jpeg" width="800" alt="Trip Calendar Planner" />
+  
+  <h3>3. Trip Form & Pre-Flight Live Guard Panel</h3>
+  <img src="Images/WhatsApp%20Image%202026-07-12%20at%204.52.51%20PM.jpeg" width="800" alt="Trip Form & Pre-Flight Live Guard Panel" />
+  
+  <h3>4. Interactive Driver Kanban Board</h3>
+  <img src="Images/WhatsApp%20Image%202026-07-12%20at%204.53.00%20PM.jpeg" width="800" alt="Interactive Driver Kanban Board" />
+  
+  <h3>5. Interactive Vehicle Kanban Board</h3>
+  <img src="Images/WhatsApp%20Image%202026-07-12%20at%204.53.19%20PM.jpeg" width="800" alt="Interactive Vehicle Kanban Board" />
+</div>
