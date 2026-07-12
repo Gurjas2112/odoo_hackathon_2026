@@ -12,6 +12,7 @@ class TransitMaintenance(models.Model):
     _name = 'transit.maintenance'
     _description = 'Maintenance Log'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date desc'
 
     name = fields.Char(

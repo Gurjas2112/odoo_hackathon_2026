@@ -12,6 +12,7 @@ class TransitDriver(models.Model):
     _name = 'transit.driver'
     _description = 'Driver'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
 
     # ── Core Fields (PS §3.4) ──

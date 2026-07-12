@@ -33,6 +33,11 @@ End-to-end transport operations management:
         'views/menu.xml',
         'data/demo_data.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'transit_ops/static/src/css/theme.css',
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,

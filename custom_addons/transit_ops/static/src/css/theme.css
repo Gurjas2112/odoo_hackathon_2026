@@ -1,0 +1,72 @@
+/* ==============================================================
+   TransitOps — Custom Theme for Odoo Backend
+   Overrides standard Odoo colors for a premium Hackathon look
+   ============================================================== */
+
+:root {
+    --o-brand-odoo: #0f172a !important; /* Deep Navy Blue */
+    --o-brand-primary: #10b981 !important; /* Neon Green */
+    --o-brand-secondary: #334155 !important;
+    --o-brand-lightsecondary: #e2e8f0 !important;
+}
+
+/* Navbar overrides */
+.o_main_navbar {
+    background-color: var(--o-brand-odoo) !important;
+    border-bottom: 2px solid var(--o-brand-primary) !important;
+}
+
+.o_main_navbar .o_menu_brand {
+    color: var(--o-brand-primary) !important;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.o_main_navbar .o_nav_entry, 
+.o_main_navbar .dropdown-toggle {
+    color: #f8fafc !important;
+}
+
+.o_main_navbar .o_nav_entry:hover, 
+.o_main_navbar .dropdown-toggle:hover {
+    background-color: var(--o-brand-secondary) !important;
+    color: var(--o-brand-primary) !important;
+}
+
+/* Button overrides */
+.btn-primary {
+    background-color: var(--o-brand-primary) !important;
+    border-color: var(--o-brand-primary) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+.btn-primary:hover {
+    background-color: #059669 !important; /* Darker green on hover */
+    border-color: #059669 !important;
+}
+
+/* Badges / Tags */
+.badge.text-bg-info {
+    background-color: var(--o-brand-odoo) !important;
+    color: var(--o-brand-primary) !important;
+    border: 1px solid var(--o-brand-primary);
+}
+
+/* Kanban customizations */
+.o_kanban_record {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    border-left-width: 4px !important;
+}
+
+.o_kanban_record_title {
+    font-size: 1.1em;
+    color: var(--o-brand-odoo);
+}
+
+/* Form headers */
+.o_form_view .o_form_sheet_bg .o_form_sheet {
+    border-top: 4px solid var(--o-brand-odoo) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+}

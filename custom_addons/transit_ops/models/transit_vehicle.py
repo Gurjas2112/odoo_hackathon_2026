@@ -9,7 +9,7 @@ class TransitVehicle(models.Model):
     - Rule 2: Retired/In Shop vehicles filtered from trip dispatch via domain
     """
     _name = 'transit.vehicle'
-    _description = 'Vehicle'
+    _description = 'Transit Vehicle'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'registration_number'
     _rec_name = 'name'

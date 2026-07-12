@@ -17,6 +17,7 @@ class TransitTrip(models.Model):
     _name = 'transit.trip'
     _description = 'Trip'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
 
     # ── Identity ──
@@ -55,6 +56,7 @@ class TransitTrip(models.Model):
     toll_cost = fields.Float(string='Toll/Misc Cost (₹)')
 
     # ── State (PS §3.5 lifecycle) ──
+    color = fields.Integer('Color Index', default=0)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('dispatched', 'Dispatched'),
