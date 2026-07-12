@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Trip Sequence: TR001, TR002, ... -->
+    <record id="seq_transit_trip" model="ir.sequence">
+        <field name="name">Trip Sequence</field>
+        <field name="code">transit.trip</field>
+        <field name="prefix">TR</field>
+        <field name="padding">3</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Maintenance Sequence: MNT001, MNT002, ... -->
+    <record id="seq_transit_maintenance" model="ir.sequence">
+        <field name="name">Maintenance Sequence</field>
+        <field name="code">transit.maintenance</field>
+        <field name="prefix">MNT</field>
+        <field name="padding">3</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>

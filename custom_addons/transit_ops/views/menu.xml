@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- ROOT MENU                                     -->
+    <!-- ============================================ -->
+    <menuitem id="menu_transit_ops_root"
+        name="TransitOps"
+        web_icon="transit_ops,static/description/icon.png"
+        sequence="10"/>
+
+    <!-- ============================================ -->
+    <!-- DASHBOARD                                     -->
+    <!-- ============================================ -->
+    <menuitem id="menu_dashboard"
+        name="Dashboard"
+        parent="menu_transit_ops_root"
+        sequence="10"/>
+
+    <menuitem id="menu_dashboard_fleet"
+        name="Fleet Overview"
+        parent="menu_dashboard"
+        action="action_dashboard_vehicles"
+        sequence="10"/>
+
+    <menuitem id="menu_dashboard_trips"
+        name="Trip Analytics"
+        parent="menu_dashboard"
+        action="action_dashboard_trips"
+        sequence="20"/>
+
+    <!-- ============================================ -->
+    <!-- FLEET (Vehicle Registry)                      -->
+    <!-- ============================================ -->
+    <menuitem id="menu_fleet"
+        name="Fleet"
+        parent="menu_transit_ops_root"
+        action="action_transit_vehicle"
+        groups="group_fleet_manager,group_dispatcher,group_financial_analyst"
+        sequence="20"/>
+
+    <!-- ============================================ -->
+    <!-- DRIVERS                                       -->
+    <!-- ============================================ -->
+    <menuitem id="menu_drivers"
+        name="Drivers"
+        parent="menu_transit_ops_root"
+        action="action_transit_driver"
+        groups="group_fleet_manager,group_safety_officer"
+        sequence="30"/>
+
+    <!-- ============================================ -->
+    <!-- TRIPS                                         -->
+    <!-- ============================================ -->
+    <menuitem id="menu_trips"
+        name="Trips"
+        parent="menu_transit_ops_root"
+        action="action_transit_trip"
+        groups="group_dispatcher,group_fleet_manager,group_safety_officer"
+        sequence="40"/>
+
+    <!-- ============================================ -->
+    <!-- MAINTENANCE                                   -->
+    <!-- ============================================ -->
+    <menuitem id="menu_maintenance"
+        name="Maintenance"
+        parent="menu_transit_ops_root"
+        action="action_transit_maintenance"
+        groups="group_fleet_manager"
+        sequence="50"/>
+
+    <!-- ============================================ -->
+    <!-- FUEL & EXPENSES                               -->
+    <!-- ============================================ -->
+    <menuitem id="menu_fuel_expenses"
+        name="Fuel &amp; Expenses"
+        parent="menu_transit_ops_root"
+        groups="group_financial_analyst,group_fleet_manager"
+        sequence="60"/>
+
+    <menuitem id="menu_fuel_logs"
+        name="Fuel Logs"
+        parent="menu_fuel_expenses"
+        action="action_transit_fuel"
+        sequence="10"/>
+
+    <menuitem id="menu_expenses"
+        name="Other Expenses"
+        parent="menu_fuel_expenses"
+        action="action_transit_expense"
+        sequence="20"/>
+
+    <!-- ============================================ -->
+    <!-- ANALYTICS (Reports)                           -->
+    <!-- ============================================ -->
+    <menuitem id="menu_analytics"
+        name="Analytics"
+        parent="menu_transit_ops_root"
+        sequence="70"/>
+
+    <menuitem id="menu_analytics_fleet"
+        name="Fleet Analytics"
+        parent="menu_analytics"
+        action="action_dashboard_vehicles"
+        groups="group_fleet_manager,group_financial_analyst"
+        sequence="10"/>
+
+    <menuitem id="menu_analytics_trips"
+        name="Trip Analytics"
+        parent="menu_analytics"
+        action="action_dashboard_trips"
+        groups="group_fleet_manager,group_financial_analyst"
+        sequence="20"/>
+</odoo>

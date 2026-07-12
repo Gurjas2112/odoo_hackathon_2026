@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- DRIVER FORM VIEW                              -->
+    <!-- ============================================ -->
+    <record id="view_transit_driver_form" model="ir.ui.view">
+        <field name="name">transit.driver.form</field>
+        <field name="model">transit.driver</field>
+        <field name="arch" type="xml">
+            <form string="Driver">
+                <header>
+                    <button name="action_set_available" string="Set Available"
+                        type="object" class="btn-primary"
+                        invisible="status == 'available'"/>
+                    <button name="action_set_off_duty" string="Off Duty"
+                        type="object"
+                        invisible="status in ('off_duty', 'on_trip')"/>
+                    <button name="action_suspend" string="Suspend"
+                        type="object" class="btn-danger"
+                        invisible="status == 'suspended'"
+                        confirm="Are you sure you want to suspend this driver? They will be blocked from all trip assignments."/>
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="available,on_trip,off_duty,suspended"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_trips" type="object"
+                            class="oe_stat_button" icon="fa-road">
+                            <field name="trip_count" widget="statinfo" string="Trips"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Driver full name"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="License Information">
+                            <field name="license_number"/>
+                            <field name="license_category"/>
+                            <field name="license_expiry"/>
+                            <field name="license_status" widget="badge"
+                                decoration-success="license_status == 'valid'"
+                                decoration-warning="license_status == 'expiring'"
+                                decoration-danger="license_status == 'expired'"/>
+                        </group>
+                        <group string="Profile">
+                            <field name="contact_number" widget="phone"/>
+                            <field name="safety_score" widget="progressbar"
+                                options="{'max_value': 100}"/>
+                            <field name="is_eligible"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Trip History" name="trips">
+                            <field name="trip_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="source"/>
+                                    <field name="destination"/>
+                                    <field name="state" widget="badge"
+                                        decoration-success="state == 'completed'"
+                                        decoration-info="state == 'dispatched'"
+                                        decoration-danger="state == 'cancelled'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- DRIVER LIST VIEW                              -->
+    <!-- ============================================ -->
+    <record id="view_transit_driver_list" model="ir.ui.view">
+        <field name="name">transit.driver.list</field>
+        <field name="model">transit.driver</field>
+        <field name="arch" type="xml">
+            <list string="Drivers &amp; Safety"
+                  decoration-danger="license_status == 'expired'"
+                  decoration-muted="status == 'suspended'">
+                <field name="name"/>
+                <field name="license_number"/>
+                <field name="license_category"/>
+                <field name="license_expiry"/>
+                <field name="license_status" widget="badge"
+                    decoration-success="license_status == 'valid'"
+                    decoration-warning="license_status == 'expiring'"
+                    decoration-danger="license_status == 'expired'"/>
+                <field name="contact_number"/>
+                <field name="trip_count" string="Trips Compl."/>
+                <field name="safety_score"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'available'"
+                    decoration-info="status == 'on_trip'"
+                    decoration-warning="status == 'off_duty'"
+                    decoration-danger="status == 'suspended'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- DRIVER SEARCH VIEW                            -->
+    <!-- ============================================ -->
+    <record id="view_transit_driver_search" model="ir.ui.view">
+        <field name="name">transit.driver.search</field>
+        <field name="model">transit.driver</field>
+        <field name="arch" type="xml">
+            <search string="Search Drivers">
+                <field name="name"/>
+                <field name="license_number"/>
+                <separator/>
+                <filter string="Available" name="filter_available"
+                    domain="[('status', '=', 'available')]"/>
+                <filter string="On Trip" name="filter_on_trip"
+                    domain="[('status', '=', 'on_trip')]"/>
+                <filter string="Suspended" name="filter_suspended"
+                    domain="[('status', '=', 'suspended')]"/>
+                <separator/>
+                <filter string="Expired Licence" name="filter_expired"
+                    domain="[('license_status', '=', 'expired')]"/>
+                <filter string="Expiring Soon (30d)" name="filter_expiring"
+                    domain="[('license_status', '=', 'expiring')]"/>
+                <separator/>
+                <filter string="Status" name="group_status"
+                        context="{'group_by': 'status'}"/>
+                    <filter string="License Category" name="group_category"
+                        context="{'group_by': 'license_category'}"/>
+                    <filter string="License Status" name="group_license"
+                        context="{'group_by': 'license_status'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_transit_driver" model="ir.actions.act_window">
+        <field name="name">Drivers &amp; Safety</field>
+        <field name="res_model">transit.driver</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_transit_driver_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register your first driver
+            </p>
+            <p>Add drivers to assign them to trips.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tags -->
+    <record id="tag_urgent" model="hackathon.tag">
+        <field name="name">Urgent</field>
+        <field name="color">1</field>
+    </record>
+    <record id="tag_important" model="hackathon.tag">
+        <field name="name">Important</field>
+        <field name="color">2</field>
+    </record>
+    <record id="tag_review" model="hackathon.tag">
+        <field name="name">Needs Review</field>
+        <field name="color">4</field>
+    </record>
+    <record id="tag_approved" model="hackathon.tag">
+        <field name="name">Approved</field>
+        <field name="color">10</field>
+    </record>
+
+    <!-- Sample Records -->
+    <record id="demo_record_1" model="hackathon.record">
+        <field name="name">Sample Record Alpha</field>
+        <field name="description">This is a demo record to showcase the module.</field>
+        <field name="date" eval="time.strftime('%Y-%m-%d')"/>
+        <field name="amount">1500.00</field>
+        <field name="priority">2</field>
+        <field name="state">confirmed</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('tag_important')])]"/>
+    </record>
+
+    <record id="demo_record_2" model="hackathon.record">
+        <field name="name">Sample Record Beta</field>
+        <field name="description">Another demo record with different state.</field>
+        <field name="date" eval="time.strftime('%Y-%m-%d')"/>
+        <field name="amount">2750.50</field>
+        <field name="priority">1</field>
+        <field name="state">in_progress</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('tag_review')])]"/>
+    </record>
+
+    <record id="demo_record_3" model="hackathon.record">
+        <field name="name">Sample Record Gamma</field>
+        <field name="description">Completed record for demo purposes.</field>
+        <field name="date" eval="time.strftime('%Y-%m-%d')"/>
+        <field name="amount">500.00</field>
+        <field name="priority">0</field>
+        <field name="state">done</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('tag_approved')])]"/>
+    </record>
+
+    <!-- Sample Lines for Record 1 -->
+    <record id="demo_line_1" model="hackathon.record.line">
+        <field name="record_id" ref="demo_record_1"/>
+        <field name="name">Item A — Primary component</field>
+        <field name="quantity">3</field>
+        <field name="unit_price">250.00</field>
+    </record>
+    <record id="demo_line_2" model="hackathon.record.line">
+        <field name="record_id" ref="demo_record_1"/>
+        <field name="name">Item B — Secondary component</field>
+        <field name="quantity">5</field>
+        <field name="unit_price">150.00</field>
+    </record>
+</odoo>

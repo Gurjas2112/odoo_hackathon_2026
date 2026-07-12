@@ -1,0 +1,190 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{titlesec}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+\definecolor{odoopurple}{RGB}{125, 85, 115}
+\definecolor{odoogrey}{RGB}{115, 115, 115}
+\definecolor{highlightyellow}{RGB}{255, 230, 153}
+
+\titleformat{\section}{\Large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries}{}{0pt}{}
+\titleformat{\subsubsection}{\bfseries}{}{0pt}{}
+
+\begin{document}
+
+\begin{center}
+    \includegraphics[width=0.3\textwidth]{odoo_logo.png} % Assuming logo file name
+\end{center}
+
+\section*{TransitOps}
+\subsection*{Smart Transport Operations Platform}
+
+\textbf{Hackathon Duration: 8 Hours}
+
+\textbf{Objective:} Build an end-to-end transport operations platform that digitizes vehicle, driver, dispatch, maintenance, and expense management while enforcing business rules and providing operational insights.
+
+\subsubsection*{1. Business Context}
+
+Many logistics companies still rely on spreadsheets and manual logbooks to manage their transport operations. This often leads to scheduling conflicts, underutilized vehicles, missed maintenance, expired driver licenses, inaccurate expense tracking, and poor operational visibility.
+
+Your task is to build TransitOps, a centralized platform that allows organizations to manage the complete lifecycle of their transport operations—from vehicle registration and driver management to dispatching, maintenance, fuel logging, and analytics.
+
+\subsubsection*{2. Target Users}
+
+\textbf{Fleet Manager:} Oversees fleet assets, maintenance, vehicle lifecycle, and operational efficiency.
+
+\textbf{Driver:} Creates trips, assigns vehicles and drivers, and monitors active deliveries.
+
+\textbf{Safety Officer:} Ensures driver compliance, tracks license validity, and monitors safety scores.
+
+\textbf{Financial Analyst:} Reviews operational expenses, fuel consumption, maintenance costs, and profitability.
+
+\newpage
+
+\subsubsection*{3. Functional Requirements}
+
+\paragraph*{3.1 Authentication}
+\begin{itemize}
+    \item Implement secure login using email and password.
+    \item Support Role-Based Access Control (RBAC).
+    \item Only authenticated users should access the application.
+\end{itemize}
+
+\paragraph*{3.2 Dashboard}
+\begin{itemize}
+    \item Display KPIs such as Active Vehicles, Available Vehicles, Vehicles in Maintenance, Active Trips, Pending Trips, Drivers On Duty, and Fleet Utilization (\%).
+    \item Provide filters by vehicle type, status, and region.
+\end{itemize}
+
+\paragraph*{3.3 Vehicle Registry}
+\begin{itemize}
+    \item Maintain a master list of vehicles with Registration Number (unique), Vehicle Name/Model, Type, Maximum Load Capacity, Odometer, Acquisition Cost, and Status.
+    \item Status values: Available, On Trip, In Shop, Retired.
+\end{itemize}
+
+\paragraph*{3.4 Driver Management}
+\begin{itemize}
+    \item Maintain driver profiles including Name, License Number, License Category, License Expiry Date, Contact Number, Safety Score, and Status.
+    \item Status values: Available, On Trip, Off Duty, Suspended.
+\end{itemize}
+
+\paragraph*{3.5 Trip Management}
+\begin{itemize}
+    \item Create trips by selecting a source, destination, available vehicle, available driver, cargo weight, and planned distance.
+    \item Trip lifecycle: Draft $\rightarrow$ Dispatched $\rightarrow$ Completed $\rightarrow$ Cancelled.
+\end{itemize}
+
+\paragraph*{3.6 Maintenance}
+\begin{itemize}
+    \item Create maintenance records for vehicles.
+    \item Adding a vehicle to a "Maintenance Log" automatically switches its status to "In Shop", removing it from the Driver's selection pool.
+\end{itemize}
+
+\paragraph*{3.7 Fuel \& Expense Management}
+\begin{itemize}
+    \item Record fuel logs (liters, cost, date) and other expenses such as tolls or maintenance.
+    \item Automatically compute total operational cost (Fuel + Maintenance) per vehicle.
+\end{itemize}
+
+\paragraph*{3.8 Reports \& Analytics}
+\begin{itemize}
+    \item Display Fuel Efficiency (Distance/Fuel), Fleet Utilization, Operational Cost, and Vehicle ROI $\frac{\text{Revenue} - (\text{Maintenance} + \text{Fuel})}{\text{Acquisition Cost}}$.
+    \item Support CSV export; PDF export is optional.
+\end{itemize}
+
+\newpage
+
+\section*{4. Mandatory Business Rules}
+
+\begin{itemize}
+    \item The vehicle registration number must be unique.
+    \item Retired or In Shop vehicles must never appear in the dispatch selection.
+    \item Drivers with expired licenses or Suspended status cannot be assigned to trips.
+    \item A driver or vehicle already marked On Trip cannot be assigned to another trip.
+    \item Cargo Weight must not exceed the vehicle's maximum load capacity.
+    \item Dispatching a trip automatically changes both the vehicle and driver status to On Trip.
+    \item Completing a trip automatically changes both the vehicle and driver status back to Available.
+    \item Cancelling a dispatched trip restores the vehicle and driver to Available.
+    \item Creating an active maintenance record automatically changes vehicle status to In Shop.
+    \item Closing maintenance restores the vehicle to Available (unless retired).
+\end{itemize}
+
+\section*{5. Example Workflow}
+
+Step 1: Register a vehicle 'Van-05' with a maximum capacity of 500 kg. Status = Available.
+
+Step 2: Register driver 'Alex' with a valid driving license.
+
+Step 3: Create a trip with Cargo Weight = 450 kg.
+
+Step 4: System validates that 450 kg $\leq$ 500 kg and allows dispatch.
+
+Step 5: Vehicle and Driver status automatically become On Trip.
+
+Step 6: Complete the trip by entering the final odometer and fuel consumed.
+
+Step 7: System marks both Vehicle and Driver as Available.
+
+Step 8: Create a maintenance record (e.g., Oil Change). Vehicle status automatically becomes In Shop and is hidden from dispatch.
+
+Step 9: Reports update operational cost and fuel efficiency based on the latest trip and fuel log.
+
+\section*{6. Expected Database Entities}
+
+\begin{itemize}
+    \item Users, Roles, Vehicles, Drivers, Trips, Maintenance Logs, Fuel Logs, Expenses
+\end{itemize}
+\DocumentMetadata{lang=en, pdfstandard=ua-2, testphase={phase-III,math,table,title,graphic}}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames,svgnames,x11names]{xcolor}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+
+\hypersetup{colorlinks=true, urlcolor=blue}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+
+\begin{document}
+
+\section*{7. Mandatory Deliverables}
+
+\begin{itemize}
+    \item Responsive web interface
+    \item Authentication with RBAC
+    \item CRUD for Vehicles and Drivers
+    \item Trip Management with validations
+    \item Automatic status transitions
+    \item Maintenance workflow
+    \item Fuel \& Expense tracking
+    \item Dashboard with KPIs
+\end{itemize}
+
+\section*{8. Bonus Features}
+
+\begin{itemize}
+    \item Charts and visual analytics
+    \item PDF export
+    \item Email reminders for expiring licenses
+    \item Vehicle document management
+    \item Search, filters, and sorting
+    \item Dark mode
+\end{itemize}
+
+\vspace{1em}
+Mockup: \url{https://link.excalidraw.com/l/65VNwvy7c4X/1FHGDNgD2td}
+
+\end{document}

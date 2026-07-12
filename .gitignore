@@ -1,0 +1,11 @@
+venv/
+odoo-src/
+docs/
+*.pyc
+__pycache__/
+.DS_Store
+.env
+*.log
+*.zip
+*.md
+!README.md

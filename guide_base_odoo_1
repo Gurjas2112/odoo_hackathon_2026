@@ -1,0 +1,171 @@
+# 🏆 Odoo Hackathon 2026 — Setup Walkthrough
+
+## What Was Built
+
+This preparation package gives you everything you need for the **Odoo Hackathon 2026 Round 1** (July 12, 2026, 9AM-5PM IST).
+
+---
+
+## Workspace Structure
+
+```
+c:\Users\Admin\Downloads\odoo\
+├── odoo-src/                    # Odoo 19.0 source code (47,826 files)
+├── venv/                        # Python virtual environment
+├── custom_addons/
+│   └── hackathon_module/        # 🏗️ Your boilerplate module (rename for hackathon)
+│       ├── __manifest__.py      # Module metadata (Odoo 19.0)
+│       ├── __init__.py          # Root imports
+│       ├── models/
+│       │   ├── __init__.py
+│       │   └── main_model.py    # 3 models: Record, Line, Tag
+│       ├── views/
+│       │   ├── main_views.xml   # 7 view types: form, list, kanban, search, graph, pivot, calendar
+│       │   └── menu.xml         # Menu items + window actions
+│       ├── security/
+│       │   ├── security.xml     # User + Manager groups
+│       │   └── ir.model.access.csv  # CRUD permissions for all models
+│       ├── data/
+│       │   └── demo_data.xml    # Sample tags, records, and line items
+│       ├── controllers/
+│       │   ├── __init__.py
+│       │   └── main.py          # REST API (3 endpoints)
+│       ├── wizard/
+│       │   ├── __init__.py
+│       │   └── bulk_wizard.py   # Bulk action wizard (TransientModel)
+│       └── static/description/
+│           └── .gitkeep         # Placeholder for module icon
+├── docs/                        # 📚 Reference cheatsheets
+│   ├── 00_HACKATHON_BATTLECARD.md    # Timeline, scoring, rules, quick wins
+│   ├── 01_ODOO_MODULE_CHEATSHEET.md  # Module structure, manifest, model patterns
+│   ├── 02_ODOO_ORM_QUICKREF.md       # CRUD, domains, computed fields, recordsets
+│   ├── 03_ODOO_VIEWS_QUICKREF.md     # All view XMLs + widget reference table
+│   ├── 04_PROBLEM_SOLVING_PLAYBOOK.md # Classification, architecture patterns, recipes
+│   └── 05_WINNING_STRATEGIES.md       # Time budget, demo script, pitfalls, README template
+└── odoo.conf                    # Odoo configuration file
+```
+
+---
+
+## 📚 Knowledge Base Files (6 files, ~54 KB total)
+
+| File | What It Contains | When to Use |
+|------|-----------------|-------------|
+| [00_HACKATHON_BATTLECARD.md](file:///c:/Users/Admin/Downloads/odoo/docs/00_HACKATHON_BATTLECARD.md) | 8-hour timeline, scoring weights, quick-win checklist, emergency commands | **Print this!** Keep it open during the entire hackathon |
+| [01_ODOO_MODULE_CHEATSHEET.md](file:///c:/Users/Admin/Downloads/odoo/docs/01_ODOO_MODULE_CHEATSHEET.md) | Module structure, `__manifest__.py`, model patterns (basic, inherit, wizard), security | When creating/modifying models |
+| [02_ODOO_ORM_QUICKREF.md](file:///c:/Users/Admin/Downloads/odoo/docs/02_ODOO_ORM_QUICKREF.md) | CRUD operations, domain filter syntax, computed fields, recordset operations | When writing business logic |
+| [03_ODOO_VIEWS_QUICKREF.md](file:///c:/Users/Admin/Downloads/odoo/docs/03_ODOO_VIEWS_QUICKREF.md) | Complete XML for every view type + QWeb report + widget reference table | When building UI |
+| [04_PROBLEM_SOLVING_PLAYBOOK.md](file:///c:/Users/Admin/Downloads/odoo/docs/04_PROBLEM_SOLVING_PLAYBOOK.md) | Problem classification, architecture patterns, domain recipes, debugging table | When you read the problem statement |
+| [05_WINNING_STRATEGIES.md](file:///c:/Users/Admin/Downloads/odoo/docs/05_WINNING_STRATEGIES.md) | Detailed time budget, UI quick wins, demo presentation script, README template | For strategy and polish |
+
+---
+
+## 🏗️ Boilerplate Module Features
+
+The `hackathon_module` template includes:
+
+### Models (3 models)
+- **HackathonRecord** — Main model with state workflow, chatter, computed fields, smart buttons
+- **HackathonRecordLine** — Line model with quantity × price = subtotal
+- **HackathonTag** — Tag model with color support
+
+### Views (7 view types)
+- **Form** — Header with status buttons + statusbar, smart buttons, tabs, chatter
+- **List** — Color-coded rows, badges, avatars, sum columns
+- **Kanban** — Grouped by state, progress bar, priority stars, user avatars
+- **Search** — Quick filters, group-by options, date filters
+- **Graph** — Bar chart by state
+- **Pivot** — Cross-tab analysis
+- **Calendar** — Date-based view
+
+### Other
+- **Security** — User/Manager groups + model access CSV
+- **Demo data** — 3 sample records, 4 tags, 2 line items
+- **API Controller** — 3 REST endpoints (list, create, stats)
+- **Wizard** — Bulk state change with optional note
+
+---
+
+## 🔧 Environment Setup Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Python 3.13.5 | ✅ Ready | |
+| Git 2.48.1 | ✅ Ready | |
+| Node.js 22.17.1 | ✅ Ready | For frontend asset compilation |
+| Odoo 19.0 source | ✅ Cloned | 47,826 files in `odoo-src/` |
+| Python venv | ✅ Created | `venv/` directory |
+| pip + setuptools | ✅ Upgraded | pip 26.1.2, setuptools 83.0.0 |
+| Odoo dependencies | ⏳ Installing | Some C extensions may need VS Build Tools |
+| PostgreSQL | ⏳ Installing | PostgresPro 17 via winget |
+| odoo.conf | ✅ Created | Points to `odoo-src/addons` + `custom_addons` |
+| wkhtmltopdf | ❌ Pending | Needed for PDF reports only |
+
+---
+
+## 🛠️ MCP Servers Assessment
+
+### Already Available (Use These)
+| Server | Hackathon Use |
+|--------|--------------|
+| **chrome-devtools-mcp** | Take screenshots of your Odoo UI, run Lighthouse audits, debug frontend |
+
+### Not Needed for This Hackathon
+| Server | Reason |
+|--------|--------|
+| dart-mcp-server | Odoo is Python, not Dart |
+| firebase-mcp-server | Not deploying to Firebase |
+| genkit-mcp-server | Not building AI features |
+| arize-tracing-assistant | Not doing ML tracing |
+
+### Recommended But Not Required
+| Server | Would Help With |
+|--------|-----------------|
+| PostgreSQL MCP | Direct DB queries during debugging |
+
+---
+
+## 🚀 How to Use on Hackathon Day
+
+### Step 1: Read the problem statement
+Open [04_PROBLEM_SOLVING_PLAYBOOK.md](file:///c:/Users/Admin/Downloads/odoo/docs/04_PROBLEM_SOLVING_PLAYBOOK.md) and classify the problem.
+
+### Step 2: Copy the boilerplate
+```powershell
+Copy-Item -Recurse custom_addons\hackathon_module custom_addons\your_solution_name
+```
+
+### Step 3: Rename everything
+- Folder name → `your_solution_name`
+- `_name` in models → `your.domain.model`
+- All XML IDs → update prefixes
+- `__manifest__.py` → update name, description, depends
+
+### Step 4: Start Odoo
+```powershell
+.\venv\Scripts\python.exe odoo-src\odoo-bin -c odoo.conf -d hackathon -i your_solution_name --dev=all
+```
+
+### Step 5: Build!
+Follow the timeline in [00_HACKATHON_BATTLECARD.md](file:///c:/Users/Admin/Downloads/odoo/docs/00_HACKATHON_BATTLECARD.md).
+
+---
+
+## ⚡ Quick Commands Reference
+
+```powershell
+# Start Odoo with your module
+.\venv\Scripts\python.exe odoo-src\odoo-bin -c odoo.conf -d hackathon -i your_module --dev=all
+
+# Update module after changes
+.\venv\Scripts\python.exe odoo-src\odoo-bin -c odoo.conf -d hackathon -u your_module --dev=all
+
+# Test install on fresh database
+.\venv\Scripts\python.exe odoo-src\odoo-bin -c odoo.conf -d hackathon_test -i your_module --stop-after-init
+
+# Access Odoo
+# http://localhost:8069
+
+# Debug mode
+# http://localhost:8069/web?debug=1
+```

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hackathon_record_user,hackathon.record.user,model_hackathon_record,group_hackathon_user,1,1,1,0
+access_hackathon_record_manager,hackathon.record.manager,model_hackathon_record,group_hackathon_manager,1,1,1,1
+access_hackathon_record_line_user,hackathon.record.line.user,model_hackathon_record_line,group_hackathon_user,1,1,1,0
+access_hackathon_record_line_manager,hackathon.record.line.manager,model_hackathon_record_line,group_hackathon_manager,1,1,1,1
+access_hackathon_tag_user,hackathon.tag.user,model_hackathon_tag,group_hackathon_user,1,0,0,0
+access_hackathon_tag_manager,hackathon.tag.manager,model_hackathon_tag,group_hackathon_manager,1,1,1,1
