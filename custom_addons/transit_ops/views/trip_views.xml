@@ -146,7 +146,7 @@
                     colors='{"draft": "secondary", "dispatched": "primary",
                              "completed": "success", "cancelled": "danger"}'/>
                 <templates>
-                    <t t-name="kanban-card">
+                    <t t-name="card">
                         <div t-attf-class="{{kanban_color(record.color.raw_value)}} oe_kanban_global_click">
                             <div class="o_dropdown_kanban dropdown">
                                 <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">

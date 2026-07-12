@@ -14,7 +14,7 @@
                     colors='{"available": "success", "on_trip": "primary",
                              "in_shop": "warning", "retired": "danger"}'/>
                 <templates>
-                    <t t-name="kanban-card">
+                    <t t-name="card">
                         <div class="oe_kanban_content">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">

@@ -32,5 +32,6 @@
         <field name="res_model">transit.complete.trip.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
+        <field name="context">{'default_trip_id': active_id}</field>
     </record>
 </odoo>

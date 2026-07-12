@@ -19,17 +19,17 @@
 ## 📋 Table of Contents
 1. [Problem Statement](#-problem-statement)
 2. [Solution Overview](#-solution-overview)
-3. [Architecture](#-architecture)
-4. [Core Features](#-core-features)
-   - [Live Guard Panel (Pre-Flight Checks)](#1-live-guard-panel-pre-flight-checks)
-   - [Interactive Wizards & Operations](#2-interactive-wizards--operations)
-   - [Automated Schedulers (Cron Jobs)](#3-automated-schedulers-cron-jobs)
-   - [Visual Analytics & Dynamic Dashboards](#4-visual-analytics--dynamic-dashboards)
-5. [Tech Stack](#-tech-stack)
-6. [Module Structure](#-module-structure)
-7. [Security & RBAC](#-security--rbac)
-8. [Quick Start](#-quick-start)
-9. [Automated Verification (Test Suite)](#-automated-verification-test-suite)
+3. [Visual Walkthrough](#-visual-walkthrough)
+4. [Architecture](#-architecture)
+5. [Business Rules & Robustness Matrix](#-business-rules--robustness-matrix)
+6. [Technical Highlights & Odoo 19 Best Practices](#-technical-highlights--odoo-19-best-practices)
+7. [Core Features](#-core-features)
+8. [Tech Stack](#-tech-stack)
+9. [Module Structure](#-module-structure)
+10. [Security & RBAC](#-security--rbac)
+11. [Team & Roles](#-team--roles)
+12. [Quick Start](#-quick-start)
+13. [Automated Verification (Test Suite)](#-automated-verification-test-suite)
 
 ---
 
@@ -49,6 +49,24 @@ In modern logistics and transport operations, organizations face severe operatio
 **TransitOps** solves these problems by providing a centralized, rules-enforced, and visually stunning digital cockpit.
 
 Every transaction—whether registering a vehicle, hiring a driver, dispatching a trip, or logging fuel—is guarded by active validation scripts. Automated background jobs track license expiries and mileage thresholds, auto-generating maintenance tickets and removing non-compliant assets from the dispatch pool. Real-time cost roll-ups give financial analysts complete transparency over the total cost of ownership (TCO) and return on investment (ROI) for each vehicle.
+
+---
+
+## 📸 Visual Walkthrough
+
+### 1. Live Guard Panel (Trip Form View)
+The **Live Guard Panel** provides active status validation directly on the trip form:
+* **Overloaded warning:** Shows when cargo weight exceeds the vehicle's capacity (Red alert).
+* **Driver eligibility check:** Checks for expired licenses or suspended status.
+* **Vehicle availability check:** Flags double-booking or in-shop statuses.
+
+*(Tip: In a live demo, these elements update reactively before you hit save)*
+
+### 2. OWL 19 Custom Analytics Dashboard
+Real-time fleet performance graphs, utilization ratios, upcoming license expiry alerts, and action shortcuts.
+
+### 3. Drag-and-Drop Kanban Board
+Move vehicles and drivers dynamically between operational states.
 
 ---
 
@@ -81,6 +99,31 @@ graph TD
    $$\text{Total Operational Cost} = \text{Fuel Logs Cost} + \text{Closed Maintenance Cost} + \text{Toll Costs}$$
 3. **Vehicle ROI:**
    $$\text{ROI (\%)} = \left(\frac{\text{Total Trip Revenue} - \text{Total Operational Cost}}{\text{Acquisition Cost}}\right) \times 100$$
+
+---
+
+## 🛡️ Business Rules & Robustness Matrix
+
+Our application enforces all core logistical and compliance constraints via multi-layered validation (PostgreSQL SQL constraints, Odoo API decorators, and UI indicators):
+
+| Business Rule | Validation Level | Implementation Code File | Mechanics |
+| :--- | :---: | :---: | :--- |
+| **Unique Vehicle Registration** | Database (SQL) | [transit_vehicle.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_vehicle.py) | Enforces `Constraint` `UNIQUE(registration_number)` to prevent duplicate plates. |
+| **No In-Shop/Retired Dispatch** | Python Logic | [transit_trip.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_trip.py) | `@api.constrains('vehicle_id')` blocks dispatching vehicles in `in_shop` or `retired` status. |
+| **Driver License Expiry Checks** | Python Logic | [transit_trip.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_trip.py) | `@api.constrains('driver_id')` blocks assignments of drivers with expired licenses. |
+| **No Double Booking** | Python State | [transit_trip.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_trip.py) | Blocks dispatching if a driver/vehicle is already marked `on_trip`. |
+| **Cargo Capacity Safeguard** | Python & HTML | [transit_trip.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_trip.py) | `@api.constrains('cargo_weight')` blocks save if cargo weight > vehicle's capacity. |
+| **License Expiry Alerting** | Cron Scheduler | [transit_cron_helpers.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_cron_helpers.py) | Automated daily scans check license expiry and alert safety officers if $\le 30$ days left. |
+| **Odometer Milestone Maintenance** | Cron Scheduler | [transit_cron_helpers.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/models/transit_cron_helpers.py) | Automatic ticket creation + shifts vehicle status to `in_shop` when mileage threshold is met. |
+
+---
+
+## 💻 Technical Highlights & Odoo 19 Best Practices
+
+1. **Class-Level Constraint Syntax:** Avoids Odoo 19 server warnings and crashes by utilizing the modern `models.Constraint` class instead of deprecated `_sql_constraints` lists.
+2. **Chatter & Audit Log Integration:** Models inherit `mail.thread` and `mail.activity.mixin` to provide out-of-the-box system logging, collaborative notes, and automated activities for dispatchers.
+3. **Optimized ORM Prefetching:** The OWL Dashboard controller utilizes `Promise.all` and Odoo's JS client-side `orm.searchRead()` API to load operational KPIs in a single batch, minimizing database queries.
+4. **Transient Wizards:** Utilizes `TransientModel` for [batch_dispatch_wizard.py](file:///c:/Users/Admin/Downloads/odoo/custom_addons/transit_ops/wizard/batch_dispatch_wizard.py) to manage temporary user selections and state transitions without cluttering primary tables.
 
 ---
 
@@ -175,6 +218,14 @@ TransitOps enforces **Role-Based Access Control (RBAC)** across four explicit op
 
 ---
 
+## 👥 Team & Roles
+
+*   **Lead Backend Developer**: Implemented the Odoo custom models, state machine transitions, and cron schedulers.
+*   **Frontend & OWL Developer**: Crafted the custom OWL 19 dashboard action, glassmorphic theme styles (`theme.css`), and the Live Guard Panel widget.
+*   **QA & Release Engineer**: Authored the unit test suite, resolved Odoo 19 compatibility syntax, and established deployment configurations.
+
+---
+
 ## ⚙️ Quick Start
 
 ### Prerequisites
@@ -210,7 +261,15 @@ Open your browser and navigate to:
 
 ## 🧪 Automated Verification (Test Suite)
 
-TransitOps includes unit tests covering safety rules, double bookings, status transitions, and capacity overflows.
+TransitOps utilizes a comprehensive automated test suite (`TransactionCase`) covering all critical business limits:
+
+*   **`test_01_vehicle_registration_uniqueness`**: Verifies that SQL-level uniqueness constraints prevent duplicate vehicle registrations.
+*   **`test_02_retired_in_shop_vehicle_dispatch`**: Assures that vehicles marked `retired` or `in_shop` reject dispatch actions.
+*   **`test_03_driver_eligibility_checks`**: Tests that expired-license or suspended-status drivers are rejected during dispatch validation.
+*   **`test_04_double_booking_prevention`**: Ensures vehicles or drivers currently on a trip cannot be booked on concurrent trips.
+*   **`test_05_cargo_capacity_overflow`**: Checks that cargo weight exceeding vehicle load limits raises validation errors.
+*   **`test_06_dispatch_status_transitions`**: Asserts that trip dispatching dynamically transitions both vehicle and driver statuses to `on_trip`.
+*   **`test_07_complete_status_transitions`**: Validates that completing a trip transitions assets back to `available`, records mileage, and updates operational costs.
 
 Run the test suite using:
 ```powershell
