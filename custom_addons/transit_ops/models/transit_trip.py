@@ -17,7 +17,6 @@ class TransitTrip(models.Model):
     _name = 'transit.trip'
     _description = 'Trip'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
 
     # ── Identity ──
@@ -77,6 +76,10 @@ class TransitTrip(models.Model):
         string='Vehicle Capacity (kg)',
         related='vehicle_id.max_load_capacity', readonly=True,
     )
+    dispatch_guard_html = fields.Html(
+        string='Dispatch Checks',
+        compute='_compute_dispatch_guard_html',
+    )
 
     @api.depends('cargo_weight', 'vehicle_id.max_load_capacity')
     def _compute_capacity_usage(self):
@@ -94,6 +97,59 @@ class TransitTrip(models.Model):
             else:
                 trip.fuel_efficiency = 0
 
+    @api.depends('vehicle_id', 'driver_id', 'cargo_weight', 'state')
+    def _compute_dispatch_guard_html(self):
+        for trip in self:
+            if trip.state != 'draft':
+                trip.dispatch_guard_html = False
+                continue
+
+            html = '<div style="border: 1px solid var(--line-300, #DEE2E6); border-radius: 6px; padding: 16px; background-color: #FAFAFA; margin-bottom: 16px; font-family: Inter, sans-serif;">'
+            html += '<div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: #697079; margin-bottom: 12px; letter-spacing: 0.06em;">DISPATCH CHECKS</div>'
+
+            # 1. Vehicle Check
+            if not trip.vehicle_id:
+                html += '<div style="margin-bottom: 8px;"><span style="color: #E03131; margin-right: 8px;">✗</span> No vehicle assigned.</div>'
+            else:
+                if trip.vehicle_id.status == 'available':
+                    html += f'<div style="margin-bottom: 8px;"><span style="color: #2F9E44; margin-right: 8px;">✓</span> Vehicle {trip.vehicle_id.registration_number} is Available.</div>'
+                else:
+                    html += f'<div style="margin-bottom: 8px; color: #E03131; font-weight: 600;"><span style="margin-right: 8px;">✗</span> Vehicle {trip.vehicle_id.registration_number} is not available (Status: {trip.vehicle_id.status}).</div>'
+
+            # 2. Driver Check
+            if not trip.driver_id:
+                html += '<div style="margin-bottom: 8px;"><span style="color: #E03131; margin-right: 8px;">✗</span> No driver assigned.</div>'
+            else:
+                if trip.driver_id.status == 'available' and trip.driver_id.license_status != 'expired':
+                    html += f'<div style="margin-bottom: 8px;"><span style="color: #2F9E44; margin-right: 8px;">✓</span> Driver {trip.driver_id.name} is Available & License valid.</div>'
+                else:
+                    html += f'<div style="margin-bottom: 8px; color: #E03131; font-weight: 600;"><span style="margin-right: 8px;">✗</span> Driver {trip.driver_id.name} is blocked (Status: {trip.driver_id.status}, License: {trip.driver_id.license_status}).</div>'
+
+            # 3. Cargo Check
+            if not trip.vehicle_id:
+                html += '<div style="margin-bottom: 8px;"><span style="color: #E03131; margin-right: 8px;">✗</span> Cannot check cargo capacity without a vehicle.</div>'
+            else:
+                capacity = trip.vehicle_id.max_load_capacity
+                if capacity > 0:
+                    usage_pct = (trip.cargo_weight / capacity) * 100
+                    bar_color = '#2F9E44' if usage_pct <= 90 else '#F08C00'
+                    if usage_pct > 100:
+                        bar_color = '#E03131'
+                        diff = trip.cargo_weight - capacity
+                        html += f'<div style="margin-bottom: 8px; font-weight: 600; color: #E03131;"><span style="margin-right: 8px;">✗</span> Cargo {trip.cargo_weight} kg exceeds capacity {capacity} kg (Over by {diff} kg)</div>'
+                    else:
+                        html += f'<div style="margin-bottom: 8px;"><span style="color: #2F9E44; margin-right: 8px;">✓</span> Cargo {trip.cargo_weight} kg is within capacity ({capacity} kg).</div>'
+
+                    # Progress Bar
+                    html += f'<div style="width: 100%; max-width: 300px; height: 8px; background-color: #E9ECEF; border-radius: 4px; margin-top: 4px; overflow: hidden;">'
+                    bar_width = min(usage_pct, 100)
+                    html += f'<div style="width: {bar_width}%; height: 100%; background-color: {bar_color}; border-radius: 4px;"></div>'
+                    html += f'</div><div style="font-size: 11px; color: #697079; margin-top: 4px;">{int(usage_pct)}% of {capacity} kg</div>'
+                else:
+                    html += '<div style="margin-bottom: 8px;"><span style="color: #E03131; margin-right: 8px;">✗</span> Vehicle has 0 capacity.</div>'
+
+            html += '</div>'
+            trip.dispatch_guard_html = html
     # ── Sequence ──
     @api.model_create_multi
     def create(self, vals_list):

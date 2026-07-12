@@ -12,7 +12,7 @@ class TransitVehicle(models.Model):
     _description = 'Transit Vehicle'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'registration_number'
-    _rec_name = 'name'
+    _rec_name = 'display_name_stored'
 
     # ── Core Fields (PS §3.3) ──
     registration_number = fields.Char(
@@ -53,6 +53,11 @@ class TransitVehicle(models.Model):
     ], string='Status', default='available', required=True, tracking=True)
     region = fields.Char(string='Region', help='Operating region for dashboard filters')
 
+    # ── Display ──
+    display_name_stored = fields.Char(
+        string='Display Name',
+        compute='_compute_display_name_stored', store=True,
+    )
 
     # ── Relational ──
     trip_ids = fields.One2many('transit.trip', 'vehicle_id', string='Trips')
@@ -69,17 +74,18 @@ class TransitVehicle(models.Model):
     roi = fields.Float(compute='_compute_roi', string='ROI (%)')
 
     # ── SQL Constraints (Rule 1) ──
-    _sql_constraints = [
-        ('registration_unique', 'UNIQUE(registration_number)',
-         'Registration number must be unique! This plate is already registered.'),
-    ]
+    _registration_unique = models.Constraint(
+        'UNIQUE(registration_number)',
+        'Registration number must be unique! This plate is already registered.'
+    )
 
-    def _compute_display_name(self):
+    @api.depends('name', 'registration_number')
+    def _compute_display_name_stored(self):
         for rec in self:
             if rec.registration_number:
-                rec.display_name = f"{rec.name} [{rec.registration_number}]"
+                rec.display_name_stored = f"{rec.name} [{rec.registration_number}]"
             else:
-                rec.display_name = rec.name or ''
+                rec.display_name_stored = rec.name or ''
 
     def _compute_trip_count(self):
         for rec in self:

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transit_batch_dispatch_wizard_form" model="ir.ui.view">
+        <field name="name">transit.batch.dispatch.wizard.form</field>
+        <field name="model">transit.batch.dispatch.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Batch Dispatch Trips">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Select draft trips and review their dispatch status below. Dispatched trips will automatically transition assigned vehicles and drivers to <strong>On Trip</strong>.
+                    </div>
+                    <group>
+                        <field name="trip_ids" widget="many2many_tags" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Validation &amp; Status" name="status_page">
+                            <field name="dispatch_summary" widget="text" class="text-monospace" readonly="1" style="white-space: pre-wrap; font-family: monospace;"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_batch_dispatch" string="Confirm Batch Dispatch" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Contextual Action to bind to transit.trip list view -->
+    <record id="action_transit_batch_dispatch_wizard" model="ir.actions.act_window">
+        <field name="name">Batch Dispatch</field>
+        <field name="res_model">transit.batch.dispatch.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="transit_ops.model_transit_trip"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

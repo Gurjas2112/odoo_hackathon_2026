@@ -9,28 +9,28 @@
         <field name="name">Raven Kumar (Fleet Manager)</field>
         <field name="login">fleet@transitops.in</field>
         <field name="password">fleet</field>
-        <field name="group_ids" eval="[(4, ref('base.group_user')), (4, ref('group_fleet_manager'))]"/>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_fleet_manager'))]"/>
     </record>
 
     <record id="user_dispatcher" model="res.users">
         <field name="name">Arjun Mehta (Dispatcher)</field>
         <field name="login">dispatch@transitops.in</field>
         <field name="password">dispatch</field>
-        <field name="group_ids" eval="[(4, ref('base.group_user')), (4, ref('group_dispatcher'))]"/>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_dispatcher'))]"/>
     </record>
 
     <record id="user_safety_officer" model="res.users">
         <field name="name">Neha Singh (Safety Officer)</field>
         <field name="login">safety@transitops.in</field>
         <field name="password">safety</field>
-        <field name="group_ids" eval="[(4, ref('base.group_user')), (4, ref('group_safety_officer'))]"/>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_safety_officer'))]"/>
     </record>
 
     <record id="user_financial_analyst" model="res.users">
         <field name="name">Vikram Shah (Financial Analyst)</field>
         <field name="login">finance@transitops.in</field>
         <field name="password">finance</field>
-        <field name="group_ids" eval="[(4, ref('base.group_user')), (4, ref('group_financial_analyst'))]"/>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_financial_analyst'))]"/>
     </record>
 
     <!-- ============================================ -->

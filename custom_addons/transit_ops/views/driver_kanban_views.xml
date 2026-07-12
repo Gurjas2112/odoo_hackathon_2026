@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transit_driver_kanban" model="ir.ui.view">
+        <field name="name">transit.driver.kanban</field>
+        <field name="model">transit.driver</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_kanban_small_column" quick_create="false">
+                <field name="name"/>
+                <field name="license_number"/>
+                <field name="license_status"/>
+                <field name="safety_score"/>
+                <field name="status"/>
+                <progressbar field="status"
+                    colors='{"available": "success", "on_trip": "primary",
+                             "off_duty": "secondary", "suspended": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-card">
+                        <div class="oe_kanban_content">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div><strong>License: </strong><field name="license_number"/></div>
+                                <div><strong>License Status: </strong><field name="license_status"/></div>
+                                <div class="mt-1">
+                                    <strong>Safety Score: </strong><field name="safety_score"/> / 100
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

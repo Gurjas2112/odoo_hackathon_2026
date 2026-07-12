@@ -19,3 +19,5 @@ access_expense_financial,transit.expense.financial,model_transit_expense,group_f
 access_expense_fleet_manager,transit.expense.fleet_manager,model_transit_expense,group_fleet_manager,1,1,0,0
 access_complete_wizard_dispatcher,transit.complete.trip.wizard.dispatcher,model_transit_complete_trip_wizard,group_dispatcher,1,1,1,1
 access_complete_wizard_fleet,transit.complete.trip.wizard.fleet,model_transit_complete_trip_wizard,group_fleet_manager,1,1,1,1
+access_batch_dispatch_wizard_dispatcher,transit.batch.dispatch.wizard.dispatcher,model_transit_batch_dispatch_wizard,group_dispatcher,1,1,1,1
+access_batch_dispatch_wizard_fleet,transit.batch.dispatch.wizard.fleet,model_transit_batch_dispatch_wizard,group_fleet_manager,1,1,1,1

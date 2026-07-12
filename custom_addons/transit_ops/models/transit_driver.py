@@ -12,7 +12,6 @@ class TransitDriver(models.Model):
     _name = 'transit.driver'
     _description = 'Driver'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
 
     # ── Core Fields (PS §3.4) ──
@@ -114,7 +113,6 @@ class TransitDriver(models.Model):
             'domain': [('driver_id', '=', self.id)],
             'context': {'default_driver_id': self.id},
         }
-
     @api.model
     def _cron_check_license_expiry(self):
         today = fields.Date.today()

@@ -24,6 +24,8 @@ End-to-end transport operations management:
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
         'data/cron_data.xml',
+        'wizard/complete_trip_wizard_views.xml',
+        'wizard/batch_dispatch_wizard_views.xml',
         'views/dashboard_action.xml',
         'views/dashboard_client_action.xml',
         'views/vehicle_views.xml',
@@ -32,7 +34,14 @@ End-to-end transport operations management:
         'views/maintenance_views.xml',
         'views/fuel_views.xml',
         'views/expense_views.xml',
+        'views/trip_calendar_views.xml',
+        'views/vehicle_kanban_views.xml',
+        'views/driver_kanban_views.xml',
         'views/menu.xml',
+        'report/trip_report.xml',
+        'report/vehicle_roi_report.xml',
+    ],
+    'demo': [
         'data/demo_data.xml',
     ],
     'assets': {

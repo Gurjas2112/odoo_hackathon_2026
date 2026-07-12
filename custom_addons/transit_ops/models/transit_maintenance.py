@@ -12,7 +12,6 @@ class TransitMaintenance(models.Model):
     _name = 'transit.maintenance'
     _description = 'Maintenance Log'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date desc'
 
     name = fields.Char(
@@ -33,6 +32,7 @@ class TransitMaintenance(models.Model):
         ('active', 'Active'),
         ('closed', 'Closed'),
     ], string='Status', default='active', required=True, tracking=True)
+    pre_maintenance_status = fields.Char(string='Pre-Maintenance Status', readonly=True)
     notes = fields.Text(string='Notes')
 
     # ── Display name ──
@@ -47,6 +47,7 @@ class TransitMaintenance(models.Model):
         records = super().create(vals_list)
         for rec in records:
             if rec.state == 'active':
+                rec.write({'pre_maintenance_status': rec.vehicle_id.status})
                 rec.vehicle_id.write({'status': 'in_shop'})
                 rec.message_post(
                     body=f"<b>{rec.vehicle_id.name}</b> moved to <em>In Shop</em> "
@@ -61,7 +62,8 @@ class TransitMaintenance(models.Model):
             if rec.state != 'active':
                 raise UserError("Only Active maintenance records can be closed.")
             rec.write({'state': 'closed'})
-            if rec.vehicle_id.status == 'retired':
+            if rec.pre_maintenance_status == 'retired' or rec.vehicle_id.status == 'retired':
+                rec.vehicle_id.write({'status': 'retired'})
                 rec.message_post(
                     body=f"Maintenance closed. <b>{rec.vehicle_id.name}</b> remains "
                          f"<em>Retired</em> — cannot return to service.",
@@ -78,5 +80,8 @@ class TransitMaintenance(models.Model):
     def action_reopen(self):
         """Reopen a closed maintenance record."""
         for rec in self:
-            rec.write({'state': 'active'})
+            rec.write({
+                'state': 'active',
+                'pre_maintenance_status': rec.vehicle_id.status
+            })
             rec.vehicle_id.write({'status': 'in_shop'})
