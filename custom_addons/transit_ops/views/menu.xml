@@ -14,19 +14,8 @@
     <menuitem id="menu_dashboard"
         name="Dashboard"
         parent="menu_transit_ops_root"
+        action="action_transit_ops_dashboard"
         sequence="10"/>
-
-    <menuitem id="menu_dashboard_fleet"
-        name="Fleet Overview"
-        parent="menu_dashboard"
-        action="action_dashboard_vehicles"
-        sequence="10"/>
-
-    <menuitem id="menu_dashboard_trips"
-        name="Trip Analytics"
-        parent="menu_dashboard"
-        action="action_dashboard_trips"
-        sequence="20"/>
 
     <!-- ============================================ -->
     <!-- FLEET (Vehicle Registry)                      -->

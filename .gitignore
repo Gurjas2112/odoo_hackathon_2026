@@ -1,11 +1,37 @@
-venv/
-odoo-src/
-docs/
-*.pyc
+# Python
 __pycache__/
-.DS_Store
-.env
-*.log
-*.zip
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual Environments
+venv/
+env/
+ENV/
+
+# Odoo source
+/odoo-src/
+
+# Documentation and notes
+/docs/
+/reference_files/
 *.md
 !README.md
+*.tex
+*.excalidraw
+*.png
+main_implementation_plan
+guide_base_odoo_1
+task*
+
+# Logs and DB
+*.log
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/

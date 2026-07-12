@@ -114,3 +114,13 @@ class TransitDriver(models.Model):
             'domain': [('driver_id', '=', self.id)],
             'context': {'default_driver_id': self.id},
         }
+
+    @api.model
+    def _cron_check_license_expiry(self):
+        today = fields.Date.today()
+        warning_date = today + relativedelta(days=30)
+        expiring = self.search([('license_expiry', '<=', warning_date), ('license_status', '!=', 'expired')])
+        for driver in expiring:
+            driver.message_post(body='CRITICAL: Driver license is expiring soon or has already expired!', subject='License Expiry Alert')
+        # Force recompute
+        self.search([])._compute_license_status()

@@ -1,72 +1,574 @@
 /* ==============================================================
-   TransitOps — Custom Theme for Odoo Backend
-   Overrides standard Odoo colors for a premium Hackathon look
+   TransitOps — Premium Theme for Odoo 19 Backend
+   Deep Navy + Emerald Green, modern glassmorphism, micro-animations
    ============================================================== */
 
+/* ── Import Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── CSS Custom Properties ── */
 :root {
-    --o-brand-odoo: #0f172a !important; /* Deep Navy Blue */
-    --o-brand-primary: #10b981 !important; /* Neon Green */
-    --o-brand-secondary: #334155 !important;
-    --o-brand-lightsecondary: #e2e8f0 !important;
+    --to-navy: #0f172a;
+    --to-navy-light: #1e293b;
+    --to-navy-mid: #334155;
+    --to-emerald: #10b981;
+    --to-emerald-dark: #059669;
+    --to-emerald-light: #d1fae5;
+    --to-amber: #f59e0b;
+    --to-red: #ef4444;
+    --to-blue: #3b82f6;
+    --to-purple: #8b5cf6;
+    --to-slate-50: #f8fafc;
+    --to-slate-100: #f1f5f9;
+    --to-slate-200: #e2e8f0;
+    --to-slate-600: #475569;
+    --to-slate-800: #1e293b;
+    --to-radius: 12px;
+    --to-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --to-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --to-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --to-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --to-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Override Odoo brand vars */
+    --o-brand-odoo: var(--to-navy) !important;
+    --o-brand-primary: var(--to-emerald) !important;
 }
 
-/* Navbar overrides */
+/* ── Global Typography ── */
+body, .o_web_client {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ══════════════════════════════════════════════════
+   NAVBAR — Deep Navy with emerald accent line
+   ══════════════════════════════════════════════════ */
 .o_main_navbar {
-    background-color: var(--o-brand-odoo) !important;
-    border-bottom: 2px solid var(--o-brand-primary) !important;
+    background: linear-gradient(135deg, var(--to-navy) 0%, var(--to-navy-light) 100%) !important;
+    border-bottom: 3px solid var(--to-emerald) !important;
+    box-shadow: var(--to-shadow-lg) !important;
+    backdrop-filter: blur(10px);
+    height: 46px !important;
 }
 
 .o_main_navbar .o_menu_brand {
-    color: var(--o-brand-primary) !important;
-    font-weight: bold;
-    letter-spacing: 1px;
+    color: var(--to-emerald) !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem !important;
 }
 
-.o_main_navbar .o_nav_entry, 
+.o_main_navbar .o_menu_sections .o_nav_entry {
+    color: var(--to-slate-200) !important;
+    font-weight: 500;
+    font-size: 0.82rem;
+    border-radius: 6px;
+    margin: 2px 1px;
+    transition: var(--to-transition);
+}
+
+.o_main_navbar .o_menu_sections .o_nav_entry:hover,
+.o_main_navbar .o_menu_sections .o_nav_entry.active {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: var(--to-emerald) !important;
+}
+
 .o_main_navbar .dropdown-toggle {
-    color: #f8fafc !important;
+    color: var(--to-slate-200) !important;
 }
 
-.o_main_navbar .o_nav_entry:hover, 
 .o_main_navbar .dropdown-toggle:hover {
-    background-color: var(--o-brand-secondary) !important;
-    color: var(--o-brand-primary) !important;
+    color: var(--to-emerald) !important;
 }
 
-/* Button overrides */
+/* ══════════════════════════════════════════════════
+   BUTTONS — Emerald primary, refined hierarchy
+   ══════════════════════════════════════════════════ */
 .btn-primary {
-    background-color: var(--o-brand-primary) !important;
-    border-color: var(--o-brand-primary) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, var(--to-emerald) 0%, var(--to-emerald-dark) 100%) !important;
+    border: none !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: var(--to-transition);
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--to-emerald-dark) 0%, #047857 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-secondary {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--to-transition);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+    border: none !important;
+    border-radius: 8px;
     font-weight: 600;
 }
-.btn-primary:hover {
-    background-color: #059669 !important; /* Darker green on hover */
-    border-color: #059669 !important;
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--to-red), #dc2626) !important;
+    border: none !important;
+    border-radius: 8px;
+    font-weight: 600;
 }
 
-/* Badges / Tags */
-.badge.text-bg-info {
-    background-color: var(--o-brand-odoo) !important;
-    color: var(--o-brand-primary) !important;
-    border: 1px solid var(--o-brand-primary);
+/* ══════════════════════════════════════════════════
+   FORM VIEWS — Elevated sheets with accent border
+   ══════════════════════════════════════════════════ */
+.o_form_view .o_form_sheet_bg {
+    background: var(--to-slate-50) !important;
 }
 
-/* Kanban customizations */
-.o_kanban_record {
-    border-radius: 8px !important;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
-    border-left-width: 4px !important;
-}
-
-.o_kanban_record_title {
-    font-size: 1.1em;
-    color: var(--o-brand-odoo);
-}
-
-/* Form headers */
 .o_form_view .o_form_sheet_bg .o_form_sheet {
-    border-top: 4px solid var(--o-brand-odoo) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+    border: none !important;
+    border-top: 4px solid var(--to-emerald) !important;
+    border-radius: var(--to-radius) !important;
+    box-shadow: var(--to-shadow-xl) !important;
+    padding: 24px 28px !important;
 }
+
+.o_form_view .o_group .o_group_col {
+    padding: 0 16px;
+}
+
+.o_form_view .o_inner_group .o_td_label {
+    font-weight: 600;
+    color: var(--to-slate-600);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Form title */
+.o_form_view .oe_title h1 .o_field_widget input,
+.o_form_view .oe_title h1 .o_field_widget span {
+    font-weight: 800 !important;
+    color: var(--to-navy) !important;
+    font-size: 1.6rem !important;
+}
+
+/* Statusbar */
+.o_form_view .o_statusbar_status {
+    background: var(--to-slate-100);
+    border-radius: 20px;
+    padding: 4px 8px;
+}
+
+.o_form_view .o_statusbar_status button.btn {
+    border-radius: 16px !important;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 16px;
+}
+
+.o_form_view .o_statusbar_status button.o_arrow_button_current {
+    background: var(--to-emerald) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Smart buttons */
+.o_form_view .oe_button_box .oe_stat_button {
+    border-radius: 10px !important;
+    margin: 4px !important;
+    border: 1px solid var(--to-slate-200) !important;
+    transition: var(--to-transition);
+}
+
+.o_form_view .oe_button_box .oe_stat_button:hover {
+    background: var(--to-emerald-light) !important;
+    border-color: var(--to-emerald) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--to-shadow-md);
+}
+
+.o_form_view .oe_button_box .oe_stat_button .o_stat_value {
+    font-weight: 800;
+    color: var(--to-navy);
+    font-size: 1.3rem;
+}
+
+/* ══════════════════════════════════════════════════
+   LIST VIEWS — Clean alternating rows
+   ══════════════════════════════════════════════════ */
+.o_list_view {
+    border-radius: var(--to-radius) !important;
+    overflow: hidden;
+}
+
+.o_list_view thead th {
+    background: var(--to-navy) !important;
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--to-emerald) !important;
+    padding: 10px 12px !important;
+}
+
+.o_list_view tbody tr:nth-child(even) {
+    background: rgba(241, 245, 249, 0.5);
+}
+
+.o_list_view tbody tr:hover {
+    background: var(--to-emerald-light) !important;
+    transition: background 0.15s ease;
+}
+
+.o_list_view tbody tr td {
+    border-color: var(--to-slate-200) !important;
+    padding: 10px 12px !important;
+    font-size: 0.88rem;
+}
+
+/* ══════════════════════════════════════════════════
+   KANBAN VIEWS — Card elevation + micro-animations
+   ══════════════════════════════════════════════════ */
+.o_kanban_view {
+    background: var(--to-slate-50) !important;
+    gap: 12px;
+}
+
+.o_kanban_record {
+    border: 1px solid var(--to-slate-200) !important;
+    border-radius: var(--to-radius) !important;
+    box-shadow: var(--to-shadow-sm) !important;
+    transition: var(--to-transition);
+    overflow: hidden;
+}
+
+.o_kanban_record:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--to-shadow-lg) !important;
+    border-color: var(--to-emerald) !important;
+}
+
+.o_kanban_group_header {
+    font-weight: 700;
+    color: var(--to-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.82rem;
+}
+
+/* ══════════════════════════════════════════════════
+   BADGES / STATE WIDGETS — Refined pill badges
+   ══════════════════════════════════════════════════ */
+.badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+}
+
+.o_field_badge .badge.text-bg-success {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0) !important;
+    color: #065f46 !important;
+}
+
+.o_field_badge .badge.text-bg-danger {
+    background: linear-gradient(135deg, #fee2e2, #fecaca) !important;
+    color: #991b1b !important;
+}
+
+.o_field_badge .badge.text-bg-info {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe) !important;
+    color: #1e40af !important;
+    border: none !important;
+}
+
+.o_field_badge .badge.text-bg-primary {
+    background: linear-gradient(135deg, var(--to-emerald-light), #a7f3d0) !important;
+    color: var(--to-emerald-dark) !important;
+}
+
+/* ══════════════════════════════════════════════════
+   CHATTER — Cleaner message thread
+   ══════════════════════════════════════════════════ */
+.o_Chatter {
+    border-top: 2px solid var(--to-slate-200) !important;
+    margin-top: 16px;
+    padding-top: 16px;
+}
+
+/* ══════════════════════════════════════════════════
+   SEARCH BAR — Rounded modern input
+   ══════════════════════════════════════════════════ */
+.o_searchview {
+    border-radius: 24px !important;
+    border: 2px solid var(--to-slate-200) !important;
+    box-shadow: var(--to-shadow-sm);
+    transition: var(--to-transition);
+}
+
+.o_searchview:focus-within {
+    border-color: var(--to-emerald) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* ══════════════════════════════════════════════════
+   HOME MENU / APP ICON — TransitOps brand
+   ══════════════════════════════════════════════════ */
+.o_home_menu_background {
+    background: linear-gradient(135deg, var(--to-navy) 0%, var(--to-navy-light) 50%, var(--to-navy-mid) 100%) !important;
+}
+
+.o_apps .o_app {
+    border-radius: var(--to-radius) !important;
+    transition: var(--to-transition);
+    padding: 16px !important;
+}
+
+.o_apps .o_app:hover {
+    transform: scale(1.05);
+    box-shadow: var(--to-shadow-lg);
+}
+
+.o_apps .o_app .o_caption {
+    font-weight: 600;
+    color: #fff !important;
+}
+
+/* ══════════════════════════════════════════════════
+   PROGRESS BARS — Emerald gradient
+   ══════════════════════════════════════════════════ */
+.progress {
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--to-slate-200);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--to-emerald), var(--to-emerald-dark)) !important;
+    border-radius: 20px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ══════════════════════════════════════════════════
+   CUSTOM DASHBOARD KPI CARDS
+   ══════════════════════════════════════════════════ */
+.to_dashboard {
+    padding: 24px;
+    background: var(--to-slate-50);
+    min-height: calc(100vh - 50px);
+}
+
+.to_dashboard .to_header {
+    margin-bottom: 28px;
+}
+
+.to_dashboard .to_header h1 {
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: var(--to-navy);
+    margin: 0;
+}
+
+.to_dashboard .to_header p {
+    color: var(--to-slate-600);
+    margin: 4px 0 0;
+    font-size: 0.95rem;
+}
+
+.to_kpi_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.to_kpi_card {
+    background: #fff;
+    border-radius: var(--to-radius);
+    padding: 20px 24px;
+    box-shadow: var(--to-shadow-md);
+    border: 1px solid var(--to-slate-200);
+    transition: var(--to-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.to_kpi_card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.to_kpi_card.emerald::before { background: linear-gradient(90deg, var(--to-emerald), var(--to-emerald-dark)); }
+.to_kpi_card.blue::before { background: linear-gradient(90deg, var(--to-blue), #2563eb); }
+.to_kpi_card.amber::before { background: linear-gradient(90deg, var(--to-amber), #d97706); }
+.to_kpi_card.red::before { background: linear-gradient(90deg, var(--to-red), #dc2626); }
+.to_kpi_card.purple::before { background: linear-gradient(90deg, var(--to-purple), #7c3aed); }
+.to_kpi_card.navy::before { background: linear-gradient(90deg, var(--to-navy), var(--to-navy-light)); }
+
+.to_kpi_card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--to-shadow-xl);
+}
+
+.to_kpi_card .to_kpi_icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.to_kpi_card.emerald .to_kpi_icon { background: var(--to-emerald-light); color: var(--to-emerald-dark); }
+.to_kpi_card.blue .to_kpi_icon { background: #dbeafe; color: var(--to-blue); }
+.to_kpi_card.amber .to_kpi_icon { background: #fef3c7; color: #b45309; }
+.to_kpi_card.red .to_kpi_icon { background: #fee2e2; color: var(--to-red); }
+.to_kpi_card.purple .to_kpi_icon { background: #ede9fe; color: var(--to-purple); }
+.to_kpi_card.navy .to_kpi_icon { background: var(--to-slate-200); color: var(--to-navy); }
+
+.to_kpi_card .to_kpi_value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--to-navy);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.to_kpi_card .to_kpi_label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--to-slate-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Quick action buttons in dashboard */
+.to_quick_actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.to_quick_actions .btn {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--to-transition);
+}
+
+.to_quick_actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--to-shadow-md);
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — Mobile-friendly adjustments
+   ══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .to_kpi_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .to_kpi_card {
+        padding: 14px 16px;
+    }
+
+    .to_kpi_card .to_kpi_value {
+        font-size: 1.5rem;
+    }
+
+    .to_kpi_card .to_kpi_icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .to_quick_actions {
+        flex-direction: column;
+    }
+
+    .o_form_view .o_form_sheet_bg .o_form_sheet {
+        padding: 16px !important;
+    }
+
+    .o_list_view thead th {
+        font-size: 0.72rem;
+        padding: 8px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .to_kpi_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .to_dashboard .to_header h1 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   SCROLLBAR — Custom slim scrollbar
+   ══════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--to-slate-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--to-slate-600);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--to-navy);
+}
+
+/* ══════════════════════════════════════════════════
+   ANIMATIONS — Subtle entrance animations
+   ══════════════════════════════════════════════════ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.to_kpi_card {
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.to_kpi_card:nth-child(2) { animation-delay: 0.05s; }
+.to_kpi_card:nth-child(3) { animation-delay: 0.1s; }
+.to_kpi_card:nth-child(4) { animation-delay: 0.15s; }
+.to_kpi_card:nth-child(5) { animation-delay: 0.2s; }
+.to_kpi_card:nth-child(6) { animation-delay: 0.25s; }
+.to_kpi_card:nth-child(7) { animation-delay: 0.3s; }
