@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+    <!-- ============================================ -->
+    <!-- DEMO USERS (4 RBAC roles)                     -->
+    <!-- ============================================ -->
+    <record id="user_fleet_manager" model="res.users">
+        <field name="name">Raven Kumar (Fleet Manager)</field>
+        <field name="login">fleet@transitops.in</field>
+        <field name="password">fleet</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_fleet_manager'))]"/>
+    </record>
+
+    <record id="user_dispatcher" model="res.users">
+        <field name="name">Arjun Mehta (Dispatcher)</field>
+        <field name="login">dispatch@transitops.in</field>
+        <field name="password">dispatch</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_dispatcher'))]"/>
+    </record>
+
+    <record id="user_safety_officer" model="res.users">
+        <field name="name">Neha Singh (Safety Officer)</field>
+        <field name="login">safety@transitops.in</field>
+        <field name="password">safety</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_safety_officer'))]"/>
+    </record>
+
+    <record id="user_financial_analyst" model="res.users">
+        <field name="name">Vikram Shah (Financial Analyst)</field>
+        <field name="login">finance@transitops.in</field>
+        <field name="password">finance</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('group_financial_analyst'))]"/>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- VEHICLES (6 — with failure cases seeded)      -->
+    <!-- ============================================ -->
+    <record id="vehicle_van05" model="transit.vehicle">
+        <field name="registration_number">GJ01AB4521</field>
+        <field name="name">VAN-05</field>
+        <field name="vehicle_type">van</field>
+        <field name="max_load_capacity">500</field>
+        <field name="odometer">74000</field>
+        <field name="acquisition_cost">620000</field>
+        <field name="status">available</field>
+        <field name="region">Ahmedabad</field>
+    </record>
+
+    <record id="vehicle_truck12" model="transit.vehicle">
+        <field name="registration_number">GJ01CD7890</field>
+        <field name="name">TRUCK-12</field>
+        <field name="vehicle_type">truck</field>
+        <field name="max_load_capacity">5000</field>
+        <field name="odometer">145000</field>
+        <field name="acquisition_cost">2450000</field>
+        <field name="status">available</field>
+        <field name="region">Surat</field>
+    </record>
+
+    <record id="vehicle_mini08" model="transit.vehicle">
+        <field name="registration_number">GJ01EF1234</field>
+        <field name="name">MINI-08</field>
+        <field name="vehicle_type">mini_truck</field>
+        <field name="max_load_capacity">800</field>
+        <field name="odometer">52000</field>
+        <field name="acquisition_cost">450000</field>
+        <field name="status">on_trip</field>
+        <field name="region">Rajkot</field>
+    </record>
+
+    <record id="vehicle_truck04" model="transit.vehicle">
+        <field name="registration_number">GJ01GH5678</field>
+        <field name="name">TRUCK-04</field>
+        <field name="vehicle_type">truck</field>
+        <field name="max_load_capacity">3000</field>
+        <field name="odometer">98000</field>
+        <field name="acquisition_cost">1800000</field>
+        <field name="status">available</field>
+        <field name="region">Vadodara</field>
+    </record>
+
+    <!-- FAILURE CASE: In Shop — should NOT appear in dispatch dropdown -->
+    <record id="vehicle_mini03" model="transit.vehicle">
+        <field name="registration_number">GJ01IJ9012</field>
+        <field name="name">MINI-03</field>
+        <field name="vehicle_type">mini_truck</field>
+        <field name="max_load_capacity">600</field>
+        <field name="odometer">41000</field>
+        <field name="acquisition_cost">375000</field>
+        <field name="status">in_shop</field>
+        <field name="region">Gandhinagar</field>
+    </record>
+
+    <!-- FAILURE CASE: Retired — should NOT appear in dispatch dropdown -->
+    <record id="vehicle_van09" model="transit.vehicle">
+        <field name="registration_number">GJ01KL3456</field>
+        <field name="name">VAN-09</field>
+        <field name="vehicle_type">van</field>
+        <field name="max_load_capacity">450</field>
+        <field name="odometer">120000</field>
+        <field name="acquisition_cost">550000</field>
+        <field name="status">retired</field>
+        <field name="region">Ahmedabad</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- DRIVERS (4 — with failure cases seeded)       -->
+    <!-- ============================================ -->
+    <record id="driver_alex" model="transit.driver">
+        <field name="name">Alex Sharma</field>
+        <field name="license_number">DL-AP4521</field>
+        <field name="license_category">hmv</field>
+        <field name="license_expiry">2028-12-15</field>
+        <field name="contact_number">+91 98765 43210</field>
+        <field name="safety_score">96</field>
+        <field name="status">available</field>
+    </record>
+
+    <!-- FAILURE CASE: Expired licence — should be BLOCKED from dispatch -->
+    <record id="driver_john" model="transit.driver">
+        <field name="name">John Patel</field>
+        <field name="license_number">DL-MP6543</field>
+        <field name="license_category">hmv</field>
+        <field name="license_expiry">2025-03-10</field>
+        <field name="contact_number">+91 98765 11111</field>
+        <field name="safety_score">72</field>
+        <field name="status">available</field>
+    </record>
+
+    <record id="driver_priya" model="transit.driver">
+        <field name="name">Priya Desai</field>
+        <field name="license_number">DL-GJ8901</field>
+        <field name="license_category">lmv</field>
+        <field name="license_expiry">2027-09-20</field>
+        <field name="contact_number">+91 98765 22222</field>
+        <field name="safety_score">88</field>
+        <field name="status">on_trip</field>
+    </record>
+
+    <!-- FAILURE CASE: Suspended — should be BLOCKED from dispatch -->
+    <record id="driver_ramesh" model="transit.driver">
+        <field name="name">Ramesh Yadav</field>
+        <field name="license_number">DL-RJ2345</field>
+        <field name="license_category">trans</field>
+        <field name="license_expiry">2026-06-30</field>
+        <field name="contact_number">+91 98765 33333</field>
+        <field name="safety_score">45</field>
+        <field name="status">suspended</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- TRIPS (6 — across all 4 states)               -->
+    <!-- ============================================ -->
+    <record id="trip_001" model="transit.trip">
+        <field name="name">TR001</field>
+        <field name="source">Gandhinagar Depot</field>
+        <field name="destination">Ahmedabad Hub</field>
+        <field name="vehicle_id" ref="vehicle_van05"/>
+        <field name="driver_id" ref="driver_alex"/>
+        <field name="cargo_weight">450</field>
+        <field name="planned_distance">38</field>
+        <field name="state">draft</field>
+    </record>
+
+    <record id="trip_002" model="transit.trip">
+        <field name="name">TR002</field>
+        <field name="source">Vatva Industrial Area</field>
+        <field name="destination">Sanand Warehouse</field>
+        <field name="vehicle_id" ref="vehicle_truck12"/>
+        <field name="cargo_weight">2800</field>
+        <field name="planned_distance">45</field>
+        <field name="state">draft</field>
+    </record>
+
+    <record id="trip_003" model="transit.trip">
+        <field name="name">TR003</field>
+        <field name="source">Rajkot Terminal</field>
+        <field name="destination">Jamnagar Port</field>
+        <field name="vehicle_id" ref="vehicle_mini08"/>
+        <field name="driver_id" ref="driver_priya"/>
+        <field name="cargo_weight">700</field>
+        <field name="planned_distance">95</field>
+        <field name="state">dispatched</field>
+    </record>
+
+    <record id="trip_004" model="transit.trip">
+        <field name="name">TR004</field>
+        <field name="source">Surat GIDC</field>
+        <field name="destination">Vadodara Central</field>
+        <field name="vehicle_id" ref="vehicle_truck04"/>
+        <field name="cargo_weight">1500</field>
+        <field name="planned_distance">160</field>
+        <field name="state">draft</field>
+    </record>
+
+    <record id="trip_005" model="transit.trip">
+        <field name="name">TR005</field>
+        <field name="source">Gandhinagar Depot</field>
+        <field name="destination">Rajkot Terminal</field>
+        <field name="vehicle_id" ref="vehicle_van05"/>
+        <field name="driver_id" ref="driver_alex"/>
+        <field name="cargo_weight">400</field>
+        <field name="planned_distance">215</field>
+        <field name="actual_distance">220</field>
+        <field name="fuel_consumed">42</field>
+        <field name="fuel_cost">4200</field>
+        <field name="toll_cost">350</field>
+        <field name="final_odometer">74220</field>
+        <field name="state">completed</field>
+    </record>
+
+    <record id="trip_006" model="transit.trip">
+        <field name="name">TR006</field>
+        <field name="source">Mansa</field>
+        <field name="destination">Kalol Depot</field>
+        <field name="vehicle_id" ref="vehicle_mini03"/>
+        <field name="cargo_weight">300</field>
+        <field name="planned_distance">55</field>
+        <field name="state">cancelled</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- MAINTENANCE (3 records)                       -->
+    <!-- ============================================ -->
+    <record id="maint_001" model="transit.maintenance">
+        <field name="name">MNT001</field>
+        <field name="vehicle_id" ref="vehicle_mini03"/>
+        <field name="service_type">Oil Change</field>
+        <field name="cost">4500</field>
+        <field name="date">2026-07-10</field>
+        <field name="state">active</field>
+    </record>
+
+    <record id="maint_002" model="transit.maintenance">
+        <field name="name">MNT002</field>
+        <field name="vehicle_id" ref="vehicle_van05"/>
+        <field name="service_type">Engine Repair</field>
+        <field name="cost">18000</field>
+        <field name="date">2026-06-25</field>
+        <field name="state">closed</field>
+    </record>
+
+    <record id="maint_003" model="transit.maintenance">
+        <field name="name">MNT003</field>
+        <field name="vehicle_id" ref="vehicle_truck12"/>
+        <field name="service_type">Tyre Replace</field>
+        <field name="cost">8200</field>
+        <field name="date">2026-07-01</field>
+        <field name="state">closed</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- FUEL LOGS                                     -->
+    <!-- ============================================ -->
+    <record id="fuel_001" model="transit.fuel.log">
+        <field name="vehicle_id" ref="vehicle_van05"/>
+        <field name="trip_id" ref="trip_005"/>
+        <field name="date">2026-07-08</field>
+        <field name="liters">42</field>
+        <field name="cost">4200</field>
+    </record>
+
+    <record id="fuel_002" model="transit.fuel.log">
+        <field name="vehicle_id" ref="vehicle_truck12"/>
+        <field name="date">2026-07-05</field>
+        <field name="liters">80</field>
+        <field name="cost">8400</field>
+    </record>
+
+    <record id="fuel_003" model="transit.fuel.log">
+        <field name="vehicle_id" ref="vehicle_mini08"/>
+        <field name="date">2026-07-09</field>
+        <field name="liters">35</field>
+        <field name="cost">3500</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- EXPENSES                                      -->
+    <!-- ============================================ -->
+    <record id="expense_001" model="transit.expense">
+        <field name="trip_id" ref="trip_005"/>
+        <field name="vehicle_id" ref="vehicle_van05"/>
+        <field name="fuel_cost">4200</field>
+        <field name="toll_cost">350</field>
+        <field name="other_cost">0</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="expense_002" model="transit.expense">
+        <field name="trip_id" ref="trip_003"/>
+        <field name="vehicle_id" ref="vehicle_mini08"/>
+        <field name="fuel_cost">3500</field>
+        <field name="toll_cost">180</field>
+        <field name="other_cost">0</field>
+        <field name="state">draft</field>
+    </record>
+
+    </data>
+</odoo>

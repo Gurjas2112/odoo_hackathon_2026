@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- VEHICLE FORM VIEW                             -->
+    <!-- ============================================ -->
+    <record id="view_transit_vehicle_form" model="ir.ui.view">
+        <field name="name">transit.vehicle.form</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <form string="Vehicle">
+                <header>
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="available,on_trip,in_shop,retired"/>
+                </header>
+                <sheet>
+                    <!-- Smart Buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_trips" type="object"
+                            class="oe_stat_button" icon="fa-road">
+                            <field name="trip_count" widget="statinfo" string="Trips"/>
+                        </button>
+                        <button name="action_view_maintenance" type="object"
+                            class="oe_stat_button" icon="fa-wrench">
+                            <span>Maintenance</span>
+                        </button>
+                        <button name="action_view_fuel_logs" type="object"
+                            class="oe_stat_button" icon="fa-tint">
+                            <span>Fuel Logs</span>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. VAN-05"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="Registration">
+                            <field name="registration_number"
+                                placeholder="e.g. GJ01AB4521"/>
+                            <field name="vehicle_type"/>
+                            <field name="region"/>
+                        </group>
+                        <group string="Specifications">
+                            <field name="max_load_capacity"/>
+                            <field name="odometer"/>
+                            <field name="acquisition_cost" widget="monetary"
+                                options="{'currency_id': False}"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Trip History" name="trips">
+                            <field name="trip_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="source"/>
+                                    <field name="destination"/>
+                                    <field name="cargo_weight"/>
+                                    <field name="state" widget="badge"
+                                        decoration-success="state == 'completed'"
+                                        decoration-info="state == 'dispatched'"
+                                        decoration-danger="state == 'cancelled'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Maintenance History" name="maintenance">
+                            <field name="maintenance_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="service_type"/>
+                                    <field name="cost"/>
+                                    <field name="date"/>
+                                    <field name="state" widget="badge"
+                                        decoration-warning="state == 'active'"
+                                        decoration-success="state == 'closed'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Costs &amp; ROI" name="costs">
+                            <group>
+                                <group>
+                                    <field name="total_fuel_cost"/>
+                                    <field name="total_maintenance_cost"/>
+                                    <field name="total_operational_cost"/>
+                                </group>
+                                <group>
+                                    <field name="total_revenue"/>
+                                    <field name="roi" string="ROI (%)"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- VEHICLE LIST VIEW                             -->
+    <!-- ============================================ -->
+    <record id="view_transit_vehicle_list" model="ir.ui.view">
+        <field name="name">transit.vehicle.list</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <list string="Vehicle Registry"
+                  decoration-muted="status == 'retired'"
+                  decoration-warning="status == 'in_shop'"
+                  multi_edit="1">
+                <field name="registration_number"/>
+                <field name="name"/>
+                <field name="vehicle_type"/>
+                <field name="max_load_capacity" string="Capacity (kg)"/>
+                <field name="odometer" string="Odometer (km)"/>
+                <field name="acquisition_cost" string="Acq. Cost (₹)"/>
+                <field name="region" optional="show"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'available'"
+                    decoration-info="status == 'on_trip'"
+                    decoration-warning="status == 'in_shop'"
+                    decoration-danger="status == 'retired'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- VEHICLE SEARCH VIEW                           -->
+    <!-- ============================================ -->
+    <record id="view_transit_vehicle_search" model="ir.ui.view">
+        <field name="name">transit.vehicle.search</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <search string="Search Vehicles">
+                <field name="registration_number"/>
+                <field name="name"/>
+                <field name="region"/>
+                <separator/>
+                <filter string="Available" name="filter_available"
+                    domain="[('status', '=', 'available')]"/>
+                <filter string="On Trip" name="filter_on_trip"
+                    domain="[('status', '=', 'on_trip')]"/>
+                <filter string="In Shop" name="filter_in_shop"
+                    domain="[('status', '=', 'in_shop')]"/>
+                <filter string="Retired" name="filter_retired"
+                    domain="[('status', '=', 'retired')]"/>
+                <separator/>
+                <filter string="Status" name="group_status"
+                    context="{'group_by': 'status'}"/>
+                <filter string="Type" name="group_type"
+                    context="{'group_by': 'vehicle_type'}"/>
+                <filter string="Region" name="group_region"
+                    context="{'group_by': 'region'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- VEHICLE GRAPH VIEW                            -->
+    <!-- ============================================ -->
+    <record id="view_transit_vehicle_graph" model="ir.ui.view">
+        <field name="name">transit.vehicle.graph</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <graph string="Vehicle Status" type="bar">
+                <field name="status" type="row"/>
+                <field name="id" type="measure" string="Count"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_transit_vehicle" model="ir.actions.act_window">
+        <field name="name">Vehicle Registry</field>
+        <field name="res_model">transit.vehicle</field>
+        <field name="view_mode">list,kanban,form,graph</field>
+        <field name="search_view_id" ref="view_transit_vehicle_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register your first vehicle
+            </p>
+            <p>Add vehicles to your fleet to start dispatching trips.</p>
+        </field>
+    </record>
+</odoo>

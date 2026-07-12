@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transit_trip_calendar" model="ir.ui.view">
+        <field name="name">transit.trip.calendar</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <calendar string="Scheduled Trips" date_start="date_start" color="state" mode="month">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+                <field name="source"/>
+                <field name="destination"/>
+            </calendar>
+        </field>
+    </record>
+</odoo>

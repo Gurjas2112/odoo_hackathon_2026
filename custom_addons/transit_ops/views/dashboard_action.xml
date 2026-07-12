@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- DASHBOARD — Vehicle Status Graph               -->
+    <!-- ============================================ -->
+    <record id="view_dashboard_vehicle_graph" model="ir.ui.view">
+        <field name="name">transit.vehicle.dashboard.graph</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <graph string="Vehicle Status Distribution" type="bar">
+                <field name="status" type="row"/>
+                <field name="id" type="measure" string="Count"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Dashboard — Vehicle Pivot -->
+    <record id="view_dashboard_vehicle_pivot" model="ir.ui.view">
+        <field name="name">transit.vehicle.dashboard.pivot</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <pivot string="Fleet Analysis">
+                <field name="vehicle_type" type="row"/>
+                <field name="status" type="col"/>
+                <field name="total_operational_cost" type="measure"/>
+                <field name="total_fuel_cost" type="measure"/>
+                <field name="total_maintenance_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- DASHBOARD — Trip Analytics Graph               -->
+    <!-- ============================================ -->
+    <record id="view_dashboard_trip_graph" model="ir.ui.view">
+        <field name="name">transit.trip.dashboard.graph</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <graph string="Trip Analysis" type="bar">
+                <field name="vehicle_id" type="row"/>
+                <field name="fuel_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Trip Pivot for analytics -->
+    <record id="view_dashboard_trip_pivot" model="ir.ui.view">
+        <field name="name">transit.trip.dashboard.pivot</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <pivot string="Trip Analytics">
+                <field name="vehicle_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="cargo_weight" type="measure"/>
+                <field name="fuel_consumed" type="measure"/>
+                <field name="fuel_cost" type="measure"/>
+                <field name="toll_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Dashboard Actions -->
+    <record id="action_dashboard_vehicles" model="ir.actions.act_window">
+        <field name="name">Fleet Overview</field>
+        <field name="res_model">transit.vehicle</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_dashboard_vehicle_graph')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_dashboard_vehicle_pivot')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_transit_vehicle_list')})]"/>
+    </record>
+
+    <record id="action_dashboard_trips" model="ir.actions.act_window">
+        <field name="name">Trip Analytics</field>
+        <field name="res_model">transit.trip</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_dashboard_trip_graph')}),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_dashboard_trip_pivot')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_transit_trip_list')})]"/>
+    </record>
+</odoo>

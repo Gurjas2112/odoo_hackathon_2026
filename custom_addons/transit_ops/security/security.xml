@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!-- ============================================ -->
+    <!-- RBAC GROUPS (PS §2 + §3.1)                    -->
+    <!-- ============================================ -->
+
+    <!-- Fleet Manager: Fleet, Drivers, Maintenance, Analytics -->
+    <record id="group_fleet_manager" model="res.groups">
+        <field name="name">Fleet Manager</field>
+
+        <field name="comment">Oversees fleet assets, maintenance, vehicle lifecycle, and operational efficiency.</field>
+    </record>
+
+    <!-- Dispatcher: Trips (full), Fleet (view only) -->
+    <record id="group_dispatcher" model="res.groups">
+        <field name="name">Dispatcher</field>
+
+        <field name="comment">Creates trips, assigns vehicles and drivers, monitors active deliveries.</field>
+    </record>
+
+    <!-- Safety Officer: Drivers (full), Trips (view only) -->
+    <record id="group_safety_officer" model="res.groups">
+        <field name="name">Safety Officer</field>
+
+        <field name="comment">Ensures driver compliance, tracks license validity, monitors safety scores.</field>
+    </record>
+
+    <!-- Financial Analyst: Fuel/Expenses (full), Analytics, Fleet (view only) -->
+    <record id="group_financial_analyst" model="res.groups">
+        <field name="name">Financial Analyst</field>
+
+        <field name="comment">Reviews operational expenses, fuel consumption, maintenance costs, profitability.</field>
+    </record>
+</odoo>

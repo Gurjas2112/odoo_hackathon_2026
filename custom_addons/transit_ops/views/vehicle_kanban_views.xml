@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transit_vehicle_kanban" model="ir.ui.view">
+        <field name="name">transit.vehicle.kanban</field>
+        <field name="model">transit.vehicle</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_kanban_small_column" quick_create="false">
+                <field name="name"/>
+                <field name="registration_number"/>
+                <field name="vehicle_type"/>
+                <field name="odometer"/>
+                <field name="status"/>
+                <progressbar field="status"
+                    colors='{"available": "success", "on_trip": "primary",
+                             "in_shop": "warning", "retired": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-card">
+                        <div class="oe_kanban_content">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div><strong>Plate: </strong><field name="registration_number"/></div>
+                                <div><strong>Type: </strong><field name="vehicle_type"/></div>
+                                <div class="mt-1" t-if="record.odometer.raw_value">
+                                    <strong>Odometer: </strong><field name="odometer"/> km
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

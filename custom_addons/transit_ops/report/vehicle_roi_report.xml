@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_transit_vehicle_roi" model="ir.actions.report">
+        <field name="name">Vehicle Financial Statement (ROI)</field>
+        <field name="model">transit.vehicle</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transit_ops.report_transit_vehicle_roi</field>
+        <field name="report_file">transit_ops.report_transit_vehicle_roi</field>
+        <field name="print_report_name">'Vehicle_ROI_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_transit_vehicle"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_transit_vehicle_roi">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Inter', sans-serif;">
+                        <!-- Report Header -->
+                        <div class="row border-bottom pb-3 mb-4">
+                            <div class="col-6">
+                                <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #14293C; margin: 0;">
+                                    VEHICLE ROI STATEMENT
+                                </h2>
+                                <span class="text-muted" style="font-size: 14px;">
+                                    Vehicle: <strong t-out="doc.name" style="color: #3A6B9E;"/>
+                                </span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.1em; border: 1px solid #16191D; padding: 4px 8px; border-radius: 3px; background-color: #FBFCFD; font-size: 13px;">
+                                    <t t-out="doc.registration_number"/>
+                                </span>
+                                <div class="text-muted small mt-2">Printed on: <span t-out="context_today().strftime('%d %b %Y')"/></div>
+                            </div>
+                        </div>
+
+                        <!-- KPI Summary Panel -->
+                        <div class="row mb-4">
+                            <div class="col-3">
+                                <div class="card text-center border" style="border-radius: 6px; padding: 10px; background-color: #F5F7F9;">
+                                    <div class="text-uppercase text-muted" style="font-size: 9px; font-weight: 600;">Acquisition Cost</div>
+                                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #16191D; margin-top: 5px;">
+                                        ₹<t t-out="round(doc.acquisition_cost)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center border" style="border-radius: 6px; padding: 10px; background-color: #F5F7F9;">
+                                    <div class="text-uppercase text-muted" style="font-size: 9px; font-weight: 600;">Total Revenue</div>
+                                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #1F7A32; margin-top: 5px;">
+                                        ₹<t t-out="round(doc.total_revenue)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center border" style="border-radius: 6px; padding: 10px; background-color: #F5F7F9;">
+                                    <div class="text-uppercase text-muted" style="font-size: 9px; font-weight: 600;">Operational Cost</div>
+                                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #B32424; margin-top: 5px;">
+                                        ₹<t t-out="round(doc.total_operational_cost)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="card text-center border" style="border-radius: 6px; padding: 10px; background-color: #DCE9F5;">
+                                    <div class="text-uppercase text-muted" style="font-size: 9px; font-weight: 600; color: #2C5279;">Computed ROI</div>
+                                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #2C5279; margin-top: 5px;">
+                                        <t t-out="round(doc.roi, 1)"/>%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculations Explanation Note -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center text-muted" style="font-size: 11px; font-style: italic;">
+                                ROI Formula: ROI (%) = [ (Total Revenue - Total Operational Cost) / Acquisition Cost ] * 100
+                            </div>
+                        </div>
+
+                        <!-- Completed Trips History -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h4 style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #14293C; border-bottom: 1px solid #DEE2E6; padding-bottom: 5px; margin-bottom: 10px;">
+                                    Trip Revenue Logs
+                                </h4>
+                                <t t-set="completed_trips" t-value="doc.trip_ids.filtered(lambda t: t.state == 'completed')"/>
+                                <t t-if="not completed_trips">
+                                    <div class="text-center text-muted py-3" style="font-size: 13px;">No completed trips logged for this vehicle.</div>
+                                </t>
+                                <t t-else="">
+                                    <table class="table table-sm table-striped" style="font-size: 12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Trip ID</th>
+                                                <th>Source</th>
+                                                <th>Destination</th>
+                                                <th class="text-end">Actual Distance</th>
+                                                <th class="text-end">Revenue Earned</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="completed_trips" t-as="trip">
+                                                <td style="font-family: 'JetBrains Mono', monospace;"><t t-out="trip.name"/></td>
+                                                <td><t t-out="trip.source"/></td>
+                                                <td><t t-out="trip.destination"/></td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace;"><t t-out="trip.actual_distance"/> km</td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #1F7A32;">
+                                                    ₹<t t-out="round(trip.planned_distance * 15)"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" class="text-end"><strong>Total Revenue:</strong></td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #1F7A32;">
+                                                    ₹<t t-out="round(doc.total_revenue)"/>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Maintenance & Fuel Breakdown -->
+                        <div class="row">
+                            <!-- Fuel Cost Log -->
+                            <div class="col-6">
+                                <h4 style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #14293C; border-bottom: 1px solid #DEE2E6; padding-bottom: 5px; margin-bottom: 10px;">
+                                    Fuel Consumption Logs
+                                </h4>
+                                <t t-if="not doc.fuel_log_ids">
+                                    <div class="text-center text-muted py-3" style="font-size: 13px;">No fuel logs recorded.</div>
+                                </t>
+                                <t t-else="">
+                                    <table class="table table-sm table-striped" style="font-size: 12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th class="text-end">Liters</th>
+                                                <th class="text-end">Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="doc.fuel_log_ids" t-as="fuel">
+                                                <td style="font-family: 'JetBrains Mono', monospace;"><t t-out="fuel.date.strftime('%d %b %Y')"/></td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace;"><t t-out="fuel.liters"/> L</td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace;">₹<t t-out="round(fuel.cost)"/></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" class="text-end"><strong>Total Fuel Cost:</strong></td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">
+                                                    ₹<t t-out="round(doc.total_fuel_cost)"/>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </t>
+                            </div>
+
+                            <!-- Maintenance Logs -->
+                            <div class="col-6">
+                                <h4 style="font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #14293C; border-bottom: 1px solid #DEE2E6; padding-bottom: 5px; margin-bottom: 10px;">
+                                    Closed Maintenance Logs
+                                </h4>
+                                <t t-set="closed_maint" t-value="doc.maintenance_ids.filtered(lambda m: m.state == 'closed')"/>
+                                <t t-if="not closed_maint">
+                                    <div class="text-center text-muted py-3" style="font-size: 13px;">No closed maintenance records.</div>
+                                </t>
+                                <t t-else="">
+                                    <table class="table table-sm table-striped" style="font-size: 12px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Service Type</th>
+                                                <th class="text-end">Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="closed_maint" t-as="maint">
+                                                <td style="font-family: 'JetBrains Mono', monospace;"><t t-out="maint.date.strftime('%d %b %Y')"/></td>
+                                                <td><t t-out="maint.service_type"/></td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace;">₹<t t-out="round(maint.cost)"/></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" class="text-end"><strong>Total Maint Cost:</strong></td>
+                                                <td class="text-end" style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">
+                                                    ₹<t t-out="round(doc.total_maintenance_cost)"/>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Summary Operational Cost Block -->
+                        <div class="row mt-4 pt-3 border-top">
+                            <div class="col-12 text-end" style="font-size: 14px;">
+                                <span class="text-muted">Total Operational Expenses (Fuel + Maintenance):</span>
+                                <strong style="font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #B32424; margin-left: 10px;">
+                                    ₹<t t-out="round(doc.total_operational_cost)"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="row mt-5 pt-4" style="border-top: 1px dashed #DEE2E6; font-size: 10px;">
+                            <div class="col-12 text-center text-muted">
+                                TransitOps Smart Transport Operations Platform · Fleet ROI Statement
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

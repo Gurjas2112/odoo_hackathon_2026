@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_transit_trip" model="ir.actions.report">
+        <field name="name">Trip Manifest</field>
+        <field name="model">transit.trip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transit_ops.report_transit_trip</field>
+        <field name="report_file">transit_ops.report_transit_trip</field>
+        <field name="print_report_name">'Trip_Manifest_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_transit_trip"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_transit_trip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Inter', sans-serif;">
+                        <!-- Report Title -->
+                        <div class="row border-bottom pb-3 mb-4">
+                            <div class="col-6">
+                                <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #14293C; margin: 0;">
+                                    TRIP MANIFEST
+                                </h2>
+                                <span class="text-muted" style="font-size: 14px;">
+                                    ID: <strong t-out="doc.name" style="font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #3A6B9E;"/>
+                                </span>
+                            </div>
+                            <div class="col-6 text-end">
+                                <h3 style="margin: 0;">
+                                    <span t-if="doc.state == 'draft'" class="badge bg-secondary text-uppercase" style="padding: 6px 12px; font-size: 12px; border-radius: 4px;">Draft</span>
+                                    <span t-if="doc.state == 'dispatched'" class="badge bg-primary text-uppercase" style="padding: 6px 12px; font-size: 12px; border-radius: 4px;">Dispatched</span>
+                                    <span t-if="doc.state == 'completed'" class="badge bg-success text-uppercase" style="padding: 6px 12px; font-size: 12px; border-radius: 4px;">Completed</span>
+                                    <span t-if="doc.state == 'cancelled'" class="badge bg-danger text-uppercase" style="padding: 6px 12px; font-size: 12px; border-radius: 4px;">Cancelled</span>
+                                </h3>
+                                <div class="text-muted small mt-1">Printed on: <span t-out="context_today().strftime('%d %b %Y')"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Route & Logistics Information -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <div class="card border-0" style="background-color: #F5F7F9; border-radius: 6px; padding: 15px; height: 100%;">
+                                    <h5 class="text-uppercase" style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #697079; border-bottom: 1px solid #DEE2E6; padding-bottom: 5px; margin-bottom: 10px;">
+                                        Route Details
+                                    </h5>
+                                    <table class="table table-sm table-borderless mb-0" style="font-size: 13px;">
+                                        <tr>
+                                            <td style="width: 30%; color: #697079; padding: 2px 0;">Source:</td>
+                                            <td style="font-weight: 600; color: #16191D; padding: 2px 0;"><t t-out="doc.source"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Destination:</td>
+                                            <td style="font-weight: 600; color: #16191D; padding: 2px 0;"><t t-out="doc.destination"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Planned Dist:</td>
+                                            <td style="font-family: 'JetBrains Mono', monospace; color: #16191D; padding: 2px 0;"><t t-out="doc.planned_distance"/> km</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Actual Dist:</td>
+                                            <td style="font-family: 'JetBrains Mono', monospace; color: #16191D; padding: 2px 0;">
+                                                <t t-if="doc.actual_distance" t-out="doc.actual_distance"/>
+                                                <t t-else="">—</t>
+                                                <t t-if="doc.actual_distance"> km</t>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card border-0" style="background-color: #F5F7F9; border-radius: 6px; padding: 15px; height: 100%;">
+                                    <h5 class="text-uppercase" style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #697079; border-bottom: 1px solid #DEE2E6; padding-bottom: 5px; margin-bottom: 10px;">
+                                        Cargo Load Validation
+                                    </h5>
+                                    <table class="table table-sm table-borderless mb-0" style="font-size: 13px;">
+                                        <tr>
+                                            <td style="width: 40%; color: #697079; padding: 2px 0;">Cargo Weight:</td>
+                                            <td style="font-weight: 600; color: #16191D; padding: 2px 0;"><t t-out="doc.cargo_weight"/> kg</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Vehicle Capacity:</td>
+                                            <td style="font-weight: 600; color: #16191D; padding: 2px 0;"><t t-out="doc.vehicle_capacity"/> kg</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Capacity Usage:</td>
+                                            <td style="padding: 2px 0;">
+                                                <strong t-out="round(doc.capacity_usage_pct, 1)" style="font-family: 'JetBrains Mono', monospace;"/>%
+                                                <t t-if="doc.capacity_usage_pct &gt; 100">
+                                                    <span class="text-danger font-weight-bold" style="margin-left: 5px;">[OVERLIMIT]</span>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- Simple Capacity Progress Bar -->
+                                    <div class="progress mt-3" style="height: 10px; background-color: #E9ECEF; border-radius: 3px;">
+                                        <div class="progress-bar" role="progressbar" 
+                                             t-attf-style="width: #{min(doc.capacity_usage_pct, 100)}%; background-color: #{'#E03131' if doc.capacity_usage_pct &gt; 100 else '#2F9E44'}; border-radius: 3px;"
+                                             t-att-aria-valuenow="doc.capacity_usage_pct" aria-valuemin="0" aria-valuemax="100"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Driver & Vehicle Assignments -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <div class="card" style="border: 1px solid #DEE2E6; border-radius: 6px; padding: 15px; height: 100%;">
+                                    <h5 class="text-uppercase" style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #3A6B9E; border-bottom: 1px solid #E9ECEF; padding-bottom: 5px; margin-bottom: 10px;">
+                                        Assigned Vehicle
+                                    </h5>
+                                    <table class="table table-sm table-borderless mb-0" style="font-size: 13px;">
+                                        <tr>
+                                            <td style="width: 35%; color: #697079; padding: 2px 0;">Name/Model:</td>
+                                            <td style="font-weight: 600; color: #16191D; padding: 2px 0;"><t t-out="doc.vehicle_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Registration:</td>
+                                            <td style="padding: 2px 0;">
+                                                <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; letter-spacing: 0.1em; border: 1px solid #16191D; padding: 2px 6px; border-radius: 3px; background-color: #FBFCFD; font-size: 11px;">
+                                                    <t t-out="doc.vehicle_id.registration_number"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Type:</td>
+                                            <td style="text-transform: capitalize; color: #16191D; padding: 2px 0;"><t t-out="doc.vehicle_id.vehicle_type.replace('_', ' ')"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Odometer Reading:</td>
+                                            <td style="font-family: 'JetBrains Mono', monospace; color: #16191D; padding: 2px 0;"><t t-out="doc.vehicle_id.odometer"/> km</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card" style="border: 1px solid #DEE2E6; border-radius: 6px; padding: 15px; height: 100%;">
+                                    <h5 class="text-uppercase" style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #3A6B9E; border-bottom: 1px solid #E9ECEF; padding-bottom: 5px; margin-bottom: 10px;">
+                                        Assigned Driver
+                                    </h5>
+                                    <table class="table table-sm table-borderless mb-0" style="font-size: 13px;">
+                                        <tr>
+                                            <td style="width: 35%; color: #697079; padding: 2px 0;">Driver Name:</td>
+                                            <td style="font-weight: 600; color: #16191D; padding: 2px 0;"><t t-out="doc.driver_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">License Number:</td>
+                                            <td style="font-family: 'JetBrains Mono', monospace; color: #16191D; padding: 2px 0;"><t t-out="doc.driver_id.license_number"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">Category:</td>
+                                            <td style="text-transform: uppercase; color: #16191D; padding: 2px 0;"><t t-out="doc.driver_id.license_category"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #697079; padding: 2px 0;">License Expiry:</td>
+                                            <td style="padding: 2px 0;">
+                                                <t t-out="doc.driver_id.license_expiry.strftime('%d %b %Y')"/>
+                                                <t t-if="doc.driver_id.license_status == 'expired'">
+                                                    <span class="text-danger font-weight-bold" style="margin-left: 5px;">[EXPIRED]</span>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Completion & Financial Performance -->
+                        <t t-if="doc.state == 'completed'">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h5 class="text-uppercase" style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #14293C; border-bottom: 1px solid #DEE2E6; padding-bottom: 5px; margin-bottom: 10px;">
+                                        Trip Metrics &amp; Operational Costs
+                                    </h5>
+                                    <table class="table table-bordered table-sm text-center" style="font-size: 13px;">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="font-weight: 600;">Odometer Start</th>
+                                                <th style="font-weight: 600;">Odometer End</th>
+                                                <th style="font-weight: 600;">Fuel Consumed</th>
+                                                <th style="font-weight: 600;">Fuel Efficiency</th>
+                                                <th style="font-weight: 600;">Fuel Cost</th>
+                                                <th style="font-weight: 600;">Tolls &amp; Misc</th>
+                                                <th style="font-weight: 600; background-color: #EFF5FB; color: #2C5279;">Total Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-family: 'JetBrains Mono', monospace;"><t t-out="doc.final_odometer - doc.actual_distance"/> km</td>
+                                                <td style="font-family: 'JetBrains Mono', monospace;"><t t-out="doc.final_odometer"/> km</td>
+                                                <td style="font-family: 'JetBrains Mono', monospace;"><t t-out="doc.fuel_consumed"/> L</td>
+                                                <td style="font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #1F7A32;"><t t-out="round(doc.fuel_efficiency, 1)"/> km/L</td>
+                                                <td style="font-family: 'JetBrains Mono', monospace;">₹<t t-out="round(doc.fuel_cost)"/></td>
+                                                <td style="font-family: 'JetBrains Mono', monospace;">₹<t t-out="round(doc.toll_cost)"/></td>
+                                                <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700; background-color: #EFF5FB; color: #2C5279;">
+                                                    ₹<t t-out="round(doc.fuel_cost + doc.toll_cost)"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Legal Disclaimer & Signatures -->
+                        <div class="row mt-5 pt-4" style="border-top: 1px dashed #DEE2E6; font-size: 12px;">
+                            <div class="col-4 text-center">
+                                <div style="height: 60px;"/>
+                                <div style="border-top: 1px solid #DEE2E6; padding-top: 5px; margin: 0 20px;">
+                                    Driver Signature
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div style="height: 60px;"/>
+                                <div style="border-top: 1px solid #DEE2E6; padding-top: 5px; margin: 0 20px;">
+                                    Security Check
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div style="height: 60px;"/>
+                                <div style="border-top: 1px solid #DEE2E6; padding-top: 5px; margin: 0 20px;">
+                                    Authorized Dispatcher
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer notes -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center text-muted" style="font-size: 10px;">
+                                TransitOps Smart Transport Operations Platform · Confidentially Generated.
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

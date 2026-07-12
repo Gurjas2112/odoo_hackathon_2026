@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================ -->
+    <!-- WINDOW ACTION                                 -->
+    <!-- ============================================ -->
+    <record id="action_hackathon_record" model="ir.actions.act_window">
+        <field name="name">Records</field>
+        <field name="res_model">hackathon.record</field>
+        <field name="view_mode">list,kanban,form,calendar,graph,pivot</field>
+        <field name="search_view_id" ref="view_hackathon_record_search"/>
+        <field name="context">{'search_default_my_records': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first record!
+            </p>
+            <p>
+                Click the "New" button to get started.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tag Action -->
+    <record id="action_hackathon_tag" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">hackathon.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ============================================ -->
+    <!-- MENU ITEMS                                    -->
+    <!-- ============================================ -->
+
+    <!-- Root Menu (appears in top app bar) -->
+    <menuitem id="menu_hackathon_root"
+        name="Hackathon"
+        web_icon="hackathon_module,static/description/icon.png"
+        sequence="10"/>
+
+    <!-- Level 1: Main section -->
+    <menuitem id="menu_hackathon_main"
+        name="Records"
+        parent="menu_hackathon_root"
+        sequence="10"/>
+
+    <!-- Level 2: Action item -->
+    <menuitem id="menu_hackathon_record_all"
+        name="All Records"
+        parent="menu_hackathon_main"
+        action="action_hackathon_record"
+        sequence="10"/>
+
+    <!-- Configuration section -->
+    <menuitem id="menu_hackathon_config"
+        name="Configuration"
+        parent="menu_hackathon_root"
+        groups="group_hackathon_manager"
+        sequence="90"/>
+
+    <menuitem id="menu_hackathon_tags"
+        name="Tags"
+        parent="menu_hackathon_config"
+        action="action_hackathon_tag"
+        sequence="10"/>
+</odoo>
