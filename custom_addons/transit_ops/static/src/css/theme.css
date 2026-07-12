@@ -164,39 +164,16 @@ body, .o_web_client {
     font-size: 1.6rem !important;
 }
 
-/* Statusbar */
-.o_form_view .o_statusbar_status {
-    background: var(--to-slate-100);
-    border-radius: 20px;
-    padding: 4px 8px;
-}
 
-.o_form_view .o_statusbar_status button.btn {
-    border-radius: 16px !important;
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 4px 16px;
-}
-
-.o_form_view .o_statusbar_status button.o_arrow_button_current {
-    background: var(--to-emerald) !important;
-    color: #fff !important;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-}
 
 /* Smart buttons */
 .o_form_view .oe_button_box .oe_stat_button {
-    border-radius: 10px !important;
-    margin: 4px !important;
-    border: 1px solid var(--to-slate-200) !important;
     transition: var(--to-transition);
 }
 
 .o_form_view .oe_button_box .oe_stat_button:hover {
     background: var(--to-emerald-light) !important;
-    border-color: var(--to-emerald) !important;
-    transform: translateY(-2px);
-    box-shadow: var(--to-shadow-md);
+    color: var(--to-navy) !important;
 }
 
 .o_form_view .oe_button_box .oe_stat_button .o_stat_value {
@@ -243,7 +220,6 @@ body, .o_web_client {
    ══════════════════════════════════════════════════ */
 .o_kanban_view {
     background: var(--to-slate-50) !important;
-    gap: 12px;
 }
 
 .o_kanban_record {
@@ -251,7 +227,6 @@ body, .o_web_client {
     border-radius: var(--to-radius) !important;
     box-shadow: var(--to-shadow-sm) !important;
     transition: var(--to-transition);
-    overflow: hidden;
 }
 
 .o_kanban_record:hover {
