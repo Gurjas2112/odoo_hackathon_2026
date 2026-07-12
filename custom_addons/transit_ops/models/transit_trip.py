@@ -213,8 +213,8 @@ class TransitTrip(models.Model):
 
             # ✅ All checks passed — Rule 6: Dispatch
             trip.write({'state': 'dispatched'})
-            trip.vehicle_id.write({'status': 'on_trip'})
-            trip.driver_id.write({'status': 'on_trip'})
+            trip.vehicle_id.sudo().write({'status': 'on_trip'})
+            trip.driver_id.sudo().write({'status': 'on_trip'})
             # Log the transition in chatter
             trip.message_post(
                 body=f"<b>Trip Dispatched</b> — {trip.vehicle_id.name} and "
@@ -238,12 +238,12 @@ class TransitTrip(models.Model):
 
             # Complete the trip
             trip.write({'state': 'completed'})
-            trip.vehicle_id.write({'status': 'available'})
-            trip.driver_id.write({'status': 'available'})
+            trip.vehicle_id.sudo().write({'status': 'available'})
+            trip.driver_id.sudo().write({'status': 'available'})
 
             # Update vehicle odometer
             if trip.final_odometer:
-                trip.vehicle_id.write({'odometer': trip.final_odometer})
+                trip.vehicle_id.sudo().write({'odometer': trip.final_odometer})
                 # Calculate actual distance
                 if trip.vehicle_id.odometer:
                     trip.write({'actual_distance': trip.final_odometer - trip.vehicle_id.odometer})
@@ -283,8 +283,8 @@ class TransitTrip(models.Model):
 
             # If dispatched, restore vehicle and driver (Rule 8)
             if trip.state == 'dispatched':
-                trip.vehicle_id.write({'status': 'available'})
-                trip.driver_id.write({'status': 'available'})
+                trip.vehicle_id.sudo().write({'status': 'available'})
+                trip.driver_id.sudo().write({'status': 'available'})
                 trip.message_post(
                     body=f"<b>Dispatched Trip Cancelled</b> — {trip.vehicle_id.name} and "
                          f"{trip.driver_id.name} restored to <em>Available</em>.",

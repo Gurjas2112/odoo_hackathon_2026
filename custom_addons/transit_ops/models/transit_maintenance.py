@@ -48,7 +48,7 @@ class TransitMaintenance(models.Model):
         for rec in records:
             if rec.state == 'active':
                 rec.write({'pre_maintenance_status': rec.vehicle_id.status})
-                rec.vehicle_id.write({'status': 'in_shop'})
+                rec.vehicle_id.sudo().write({'status': 'in_shop'})
                 rec.message_post(
                     body=f"<b>{rec.vehicle_id.name}</b> moved to <em>In Shop</em> "
                          f"and removed from dispatch pool.",
@@ -63,14 +63,14 @@ class TransitMaintenance(models.Model):
                 raise UserError("Only Active maintenance records can be closed.")
             rec.write({'state': 'closed'})
             if rec.pre_maintenance_status == 'retired' or rec.vehicle_id.status == 'retired':
-                rec.vehicle_id.write({'status': 'retired'})
+                rec.vehicle_id.sudo().write({'status': 'retired'})
                 rec.message_post(
                     body=f"Maintenance closed. <b>{rec.vehicle_id.name}</b> remains "
                          f"<em>Retired</em> — cannot return to service.",
                     message_type='notification',
                 )
             else:
-                rec.vehicle_id.write({'status': 'available'})
+                rec.vehicle_id.sudo().write({'status': 'available'})
                 rec.message_post(
                     body=f"Maintenance closed. <b>{rec.vehicle_id.name}</b> returned "
                          f"to <em>Available</em>.",
@@ -84,4 +84,4 @@ class TransitMaintenance(models.Model):
                 'state': 'active',
                 'pre_maintenance_status': rec.vehicle_id.status
             })
-            rec.vehicle_id.write({'status': 'in_shop'})
+            rec.vehicle_id.sudo().write({'status': 'in_shop'})
