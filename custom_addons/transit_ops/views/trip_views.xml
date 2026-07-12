@@ -35,6 +35,9 @@
                         <h1><field name="name"/></h1>
                     </div>
 
+                    <!-- Live Guard Panel -->
+                    <field name="dispatch_guard_html" widget="html" nolabel="1" readonly="1" invisible="state != 'draft'"/>
+
                     <group>
                         <group string="Route">
                             <field name="source" placeholder="e.g. Gandhinagar Depot"/>
