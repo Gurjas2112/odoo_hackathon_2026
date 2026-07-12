@@ -211,14 +211,13 @@ body, .o_web_client {
 }
 
 .o_list_view thead th {
-    background: var(--to-navy) !important;
-    color: #fff !important;
-    font-weight: 600;
+    background: var(--to-slate-100) !important;
+    color: var(--to-navy) !important;
+    font-weight: 700;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 2px solid var(--to-emerald) !important;
-    padding: 10px 12px !important;
+    border-bottom: 2px solid var(--to-slate-200) !important;
 }
 
 .o_list_view tbody tr:nth-child(even) {
