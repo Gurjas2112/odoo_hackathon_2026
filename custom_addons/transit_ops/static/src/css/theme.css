@@ -59,12 +59,15 @@ body, .o_web_client {
     font-size: 0.85rem !important;
 }
 
-.o_main_navbar .o_menu_sections .o_nav_entry {
+.o_main_navbar .o_menu_sections .o_nav_entry,
+.o_main_navbar .o_menu_sections > a {
     color: var(--to-slate-200) !important;
+    background: transparent !important;
     font-weight: 500;
     font-size: 0.82rem;
     border-radius: 6px;
     margin: 2px 1px;
+    padding: 0 10px;
     transition: var(--to-transition);
 }
 
