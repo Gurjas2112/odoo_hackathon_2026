@@ -14,7 +14,7 @@
                         type="object" class="btn-primary"
                         invisible="state != 'draft'"
                         confirm="Dispatch this trip? Vehicle and driver will be set to On Trip."/>
-                    <button name="%(action_complete_trip_wizard)d" string="Complete Trip"
+                    <button name="%(action_transit_complete_trip_wizard)d" string="Complete Trip"
                         type="action" class="btn-success"
                         invisible="state != 'dispatched'"/>
                     <button name="action_cancel" string="Cancel"

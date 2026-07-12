@@ -6,7 +6,7 @@ import json
 class TransitOpsController(http.Controller):
     """REST API endpoints for TransitOps."""
 
-    @http.route('/api/transit/vehicles', type='json', auth='user', methods=['POST'])
+    @http.route('/api/transit/vehicles', type='jsonrpc', auth='user', methods=['POST'])
     def get_vehicles(self, **kwargs):
         """List all vehicles with status counts."""
         vehicles = request.env['transit.vehicle'].search([])
@@ -29,7 +29,7 @@ class TransitOpsController(http.Controller):
             } for v in vehicles],
         }
 
-    @http.route('/api/transit/dashboard', type='json', auth='user', methods=['POST'])
+    @http.route('/api/transit/dashboard', type='jsonrpc', auth='user', methods=['POST'])
     def get_dashboard(self, **kwargs):
         """Dashboard KPIs — PS §3.2."""
         Vehicle = request.env['transit.vehicle']
