@@ -47,7 +47,8 @@ body, .o_web_client {
     border-bottom: 3px solid var(--to-emerald) !important;
     box-shadow: var(--to-shadow-lg) !important;
     backdrop-filter: blur(10px);
-    height: 46px !important;
+    min-height: 46px !important;
+    height: auto !important;
 }
 
 .o_main_navbar .o_menu_brand {
@@ -68,17 +69,22 @@ body, .o_web_client {
 }
 
 .o_main_navbar .o_menu_sections .o_nav_entry:hover,
-.o_main_navbar .o_menu_sections .o_nav_entry.active {
+.o_main_navbar .o_menu_sections .o_nav_entry.active,
+.o_main_navbar .o_menu_sections > a.dropdown-toggle.active {
     background: rgba(16, 185, 129, 0.15) !important;
     color: var(--to-emerald) !important;
 }
 
 .o_main_navbar .dropdown-toggle {
     color: var(--to-slate-200) !important;
+    background: transparent !important;
 }
 
-.o_main_navbar .dropdown-toggle:hover {
+.o_main_navbar .dropdown-toggle:hover,
+.o_main_navbar .dropdown-toggle:focus,
+.o_main_navbar .dropdown-toggle.active {
     color: var(--to-emerald) !important;
+    background: rgba(16, 185, 129, 0.15) !important;
 }
 
 /* ══════════════════════════════════════════════════
