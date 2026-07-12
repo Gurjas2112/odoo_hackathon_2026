@@ -28,42 +28,42 @@
                 <!-- KPI Cards Grid -->
                 <div class="to_kpi_grid">
                     <!-- Active Vehicles -->
-                    <div class="to_kpi_card emerald" t-on-click="() => this.onViewVehicles()" style="cursor:pointer">
+                    <div class="to_kpi_card emerald" t-on-click="onViewVehicles" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-truck"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.activeVehicles"/>
                         <div class="to_kpi_label">Active Vehicles</div>
                     </div>
 
                     <!-- Available -->
-                    <div class="to_kpi_card blue" t-on-click="() => this.onViewVehicles()" style="cursor:pointer">
+                    <div class="to_kpi_card blue" t-on-click="onViewVehicles" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-check-circle"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.availableVehicles"/>
                         <div class="to_kpi_label">Available Vehicles</div>
                     </div>
 
                     <!-- In Maintenance -->
-                    <div class="to_kpi_card amber" t-on-click="() => this.onViewMaintenance()" style="cursor:pointer">
+                    <div class="to_kpi_card amber" t-on-click="onViewMaintenance" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-wrench"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.inMaintenance"/>
                         <div class="to_kpi_label">In Maintenance</div>
                     </div>
 
                     <!-- Active Trips -->
-                    <div class="to_kpi_card purple" t-on-click="() => this.onViewTrips()" style="cursor:pointer">
+                    <div class="to_kpi_card purple" t-on-click="onViewTrips" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-road"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.activeTrips"/>
                         <div class="to_kpi_label">Active Trips</div>
                     </div>
 
                     <!-- Pending Trips -->
-                    <div class="to_kpi_card navy" t-on-click="() => this.onViewTrips()" style="cursor:pointer">
+                    <div class="to_kpi_card navy" t-on-click="onViewTrips" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-clock-o"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.pendingTrips"/>
                         <div class="to_kpi_label">Pending Trips</div>
                     </div>
 
                     <!-- Drivers On Duty -->
-                    <div class="to_kpi_card emerald" t-on-click="() => this.onViewDrivers()" style="cursor:pointer">
+                    <div class="to_kpi_card emerald" t-on-click="onViewDrivers" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-user"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.driversOnDuty"/>
                         <div class="to_kpi_label">Drivers On Duty</div>
@@ -77,7 +77,7 @@
                     </div>
 
                     <!-- License Alerts -->
-                    <div class="to_kpi_card red" t-on-click="() => this.onViewDrivers()" style="cursor:pointer">
+                    <div class="to_kpi_card red" t-on-click="onViewDrivers" style="cursor:pointer">
                         <div class="to_kpi_icon"><i class="fa fa-exclamation-triangle"/></div>
                         <div class="to_kpi_value" t-esc="state.kpis.expiringLicenses"/>
                         <div class="to_kpi_label">License Alerts</div>
