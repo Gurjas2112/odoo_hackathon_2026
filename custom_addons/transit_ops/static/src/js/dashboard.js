@@ -91,6 +91,7 @@ export class TransitOpsDashboard extends Component {
     onViewMaintenance() { this.openAction("transit.maintenance", "list,form", "Maintenance"); }
     onViewFuelLogs() { this.openAction("transit.fuel.log", "list,form", "Fuel Logs"); }
     async onRefresh() { await this.loadDashboard(); }
+    onExportPDF() { window.print(); }
 }
 
 registry.category("actions").add("transit_ops.dashboard", TransitOpsDashboard);

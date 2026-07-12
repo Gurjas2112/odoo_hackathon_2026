@@ -11,9 +11,14 @@
                     </h1>
                     <p>Real-time fleet operations overview</p>
                 </div>
-                <button class="btn btn-outline-secondary" t-on-click="onRefresh">
-                    <i class="fa fa-refresh me-1"/> Refresh
-                </button>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" t-on-click="onExportPDF">
+                        <i class="fa fa-file-pdf-o me-1"/> Export PDF
+                    </button>
+                    <button class="btn btn-outline-secondary" t-on-click="onRefresh">
+                        <i class="fa fa-refresh me-1"/> Refresh
+                    </button>
+                </div>
             </div>
 
             <!-- Loading -->
